@@ -159,7 +159,101 @@ router.get('/news/:id', async (req, res) => {
     }
 });
 
-// --- SEED ENDPOINT ---
+const Resource = require('../models/Resource');
+
+const MOCK_RESOURCES = [
+    {
+        id: 201,
+        title: "Securing the Digital Supply Chain",
+        type: "Whitepaper",
+        summary: "Best practices for vetting third-party software vendors in defense contracts.",
+        content: "Supply chain attacks are rising. This whitepaper outlines the new 'verify-then-trust' framework adopted by the Ministry for all software procurement. It details the required SBOM (Software Bill of Materials) standards and the continuous monitoring protocols for deployed dependencies.",
+        author: "Chief Information Security Officer",
+        tags: ["Security", "Supply Chain", "Policy"],
+        date: new Date('2025-09-10'),
+        imageUrl: "https://placehold.co/600x400/2c3e50/ffffff?text=Supply+Chain+Security"
+    },
+    {
+        id: 202,
+        title: "Intro to Post-Quantum Cryptography",
+        type: "Tutorial",
+        summary: "A primer on lattice-based cryptography and migration strategies for legacy systems.",
+        content: "As quantum computing approaches viability, current RSA encryption methods become vulnerable. This tutorial breaks down the math behind lattice-based cryptography and provides a step-by-step guide for developers to start testing PQC algorithms in their non-classified environments using the new Ministry CryptoLib v4.",
+        author: "Dr. A. Turing",
+        tags: ["Cryptography", "Quantum", "DevOps"],
+        date: new Date('2025-10-05'),
+        imageUrl: "https://placehold.co/600x400/8e44ad/ffffff?text=Quantum+Crypto"
+    },
+    {
+        id: 203,
+        title: "AI Ethics in Autonomous Systems",
+        type: "Article",
+        summary: "Defining the boundaries of AI decision-making in kinetic environments.",
+        content: "The ethical deployment of AI in autonomous defense systems is paramount. This article explores the 'Human-on-the-Loop' doctrine, ensuring that lethal force decisions always retain human oversight while leveraging AI for rapid threat identification and trajectory analysis.",
+        author: "Strategic Studies Group",
+        tags: ["AI", "Ethics", "Policy"],
+        date: new Date('2025-11-12'),
+        imageUrl: "https://placehold.co/600x400/27ae60/ffffff?text=AI+Ethics"
+    }
+];
+
+// --- RESOURCES ENDPOINTS ---
+
+router.get('/resources', async (req, res) => {
+    try {
+        const { type, search } = req.query;
+
+        if (!isDbConnected()) {
+            let data = [...MOCK_RESOURCES];
+            if (type && type !== 'All') {
+                data = data.filter(r => r.type === type);
+            }
+            if (search) {
+                const lowerSearch = search.toLowerCase();
+                data = data.filter(r => r.title.toLowerCase().includes(lowerSearch) || r.tags.some(t => t.toLowerCase().includes(lowerSearch)));
+            }
+            return res.json(data);
+        }
+
+        let query = {};
+        if (type && type !== 'All') {
+            query.type = type;
+        }
+        if (search) {
+            query.$or = [
+                { title: { $regex: search, $options: 'i' } },
+                { 'tags': { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        const resources = await Resource.find(query).sort({ date: -1 });
+        if (resources.length === 0) {
+            console.warn('Database Empty. Serving mock resources.');
+            return res.json(MOCK_RESOURCES);
+        }
+        res.json(resources);
+    } catch (err) {
+        console.error("API Error:", err);
+        res.json(MOCK_RESOURCES);
+    }
+});
+
+router.get('/resources/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!isDbConnected()) {
+            const item = MOCK_RESOURCES.find(r => r.id == id);
+            return item ? res.json(item) : res.status(404).json({ message: 'Resource not found' });
+        }
+
+        const item = await Resource.findById(id);
+        res.json(item);
+    } catch (err) {
+        // Fallback
+        const item = MOCK_RESOURCES.find(r => r.id == req.params.id);
+        return item ? res.json(item) : res.status(404).json({ message: 'Resource not found' });
+    }
+});
 router.post('/seed', async (req, res) => {
     try {
         if (!isDbConnected()) {
@@ -168,8 +262,10 @@ router.post('/seed', async (req, res) => {
 
         await Project.deleteMany({});
         await News.deleteMany({});
+        await Resource.deleteMany({});
         await Project.insertMany(MOCK_PROJECTS);
         await News.insertMany(MOCK_NEWS);
+        await Resource.insertMany(MOCK_RESOURCES);
 
         res.json({ message: "Database seeded successfully" });
     } catch (err) {
