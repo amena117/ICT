@@ -1,0 +1,36 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "services": "Services",
+    "news": "News",
+    "resources": "Resources",
+    "about": "About",
+    "contact": "Contact Us"
+  },
+  "hero": {
+    "title": "Securing the Digital Frontier",
+    "subtitle": "Delivering secure, innovative web systems to support Ministry of Defense operations.",
+    "explore": "Explore Projects"
+  },
+  "mission": {
+    "title": "Our Mission",
+    "text": "To provide the Ministry of Defense with cutting-edge, resilient, and user-centric digital solutions that enhance operational efficiency and data security."
+  },
+  "featured": {
+    "title": "Featured Projects",
+    "loading": "Loading secure data..."
+  },
+  "future": {
+    "title": "Future Initiatives 2030",
+    "ai": "AI Defense",
+    "ai_desc": "Integrating autonomous threat detection algorithms into national grid systems.",
+    "quantum": "Quantum Cryptography",
+    "quantum_desc": "Developing post-quantum encryption standards for classified communications.",
+    "cloud": "Battlefield Edge Cloud",
+    "cloud_desc": "Deploying decentralized cloud nodes for real-time tactical data processing."
+  },
+  "testimonials": {
+    "title": "Trusted by Defense Leaders"
+  }
+}
