@@ -110,6 +110,10 @@ router.get('/projects', async (req, res) => {
         }
 
         const projects = await Project.find(query).sort({ createdAt: -1 });
+        if (projects.length === 0) {
+            console.warn('Database Empty. Serving mock projects.');
+            return res.json(MOCK_PROJECTS);
+        }
         res.json(projects);
     } catch (err) {
         console.error("API Error:", err);
@@ -127,6 +131,10 @@ router.get('/news', async (req, res) => {
         }
 
         const news = await News.find().sort({ date: -1 }).limit(10);
+        if (news.length === 0) {
+            console.warn('Database Empty. Serving mock news.');
+            return res.json(MOCK_NEWS);
+        }
         res.json(news);
     } catch (err) {
         console.error("API Error:", err);
