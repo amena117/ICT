@@ -10,11 +10,12 @@ const Footer = () => {
                 </div>
                 <div className="footer-col">
                     <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="/">Home</a></li>
+                    <ul className="footer-links">
                         <li><a href="/projects">Projects</a></li>
                         <li><a href="/services">Services</a></li>
+                        <li><a href="/news">News</a></li>
                         <li><a href="/contact">Contact</a></li>
+                        <li><a href="/admin/login" style={{ fontSize: '0.8rem', opacity: '0.5' }}>Admin Login</a></li>
                     </ul>
                 </div>
                 <div className="footer-col">

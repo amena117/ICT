@@ -39,7 +39,7 @@ const Navbar = () => {
                     <NavLink to="/news" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsOpen(false)}>{t('nav.news')}</NavLink>
                     <NavLink to="/resources" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsOpen(false)}>{t('nav.resources')}</NavLink>
                     <NavLink to="/about" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsOpen(false)}>{t('nav.about')}</NavLink>
-                    <Link to="/contact" className="btn btn-primary" onClick={() => setIsOpen(false)}>{t('nav.contact')}</Link>
+                    <NavLink to="/contact" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsOpen(false)}>{t('nav.contact')}</NavLink>
                 </nav>
             </div>
         </header>

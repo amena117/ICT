@@ -9,8 +9,12 @@ import Services from './pages/Services'; // To be created
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
 import Resources from './pages/Resources';
+
 import ResourceDetail from './pages/ResourceDetail';
 import Contact from './pages/Contact';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -28,6 +32,10 @@ function App() {
             <Route path="/resources/:id" element={<ResourceDetail />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            </Route>
           </Routes>
         </main>
         <Footer />
