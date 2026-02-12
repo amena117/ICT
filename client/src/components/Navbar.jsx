@@ -19,13 +19,13 @@ const Navbar = () => {
                 </Link>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <button
+                    {/* <button
                         onClick={toggleLanguage}
                         className="btn"
                         style={{ padding: '0.4rem 0.8rem', fontSize: '0.9rem', border: '1px solid #ccc', marginRight: '10px' }}
                     >
                         {i18n.language === 'en' ? 'አማርኛ' : 'English'}
-                    </button>
+                    </button> */}
 
                     <button className="nav-toggle" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle navigation">
                         <span className="hamburger"></span>
@@ -39,7 +39,7 @@ const Navbar = () => {
                     <NavLink to="/news" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsOpen(false)}>{t('nav.news')}</NavLink>
                     <NavLink to="/resources" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsOpen(false)}>{t('nav.resources')}</NavLink>
                     <NavLink to="/about" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsOpen(false)}>{t('nav.about')}</NavLink>
-                    <Link to="/contact" className="btn btn-primary" onClick={() => setIsOpen(false)}>{t('nav.contact')}</Link>
+                    <Link to="/contact" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsOpen(false)}>{t('nav.contact')}</Link>
                 </nav>
             </div>
         </header>
