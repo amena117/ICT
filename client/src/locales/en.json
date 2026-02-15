@@ -13,9 +13,13 @@
     "subtitle": "Delivering secure, innovative web systems to support Ministry of Defense operations.",
     "explore": "Explore Projects"
   },
+  "goal": {
+    "title": "Goal",
+    "text": "To establish digital protection systems based on Information and Communication Technology (ICT) innovation."
+  },
   "mission": {
-    "title": "Our Mission",
-    "text": "To provide the Ministry of Defense with cutting-edge, resilient, and user-centric digital solutions that enhance operational efficiency and data security."
+    "title": "Mission",
+    "text": "To support the institution's mission by developing and expanding ICT for efficient resource management, secure information flow, and reliable, fast IT services."
   },
   "featured": {
     "title": "Featured Projects",

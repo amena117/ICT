@@ -49,12 +49,33 @@ const Home = () => {
                 </div>
             </section>
 
+            <section className="section" style={{ backgroundColor: '#f8f9fa' }}>
+                <div className="container">
+                    <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                        አላማ (Goal)
+                    </h2>
+                    <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+                        <p style={{ fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '1rem', fontWeight: '500' }}>
+                            በኢንፎርሜሽን ኮምዩኒኬሽን ቴክኖሎጂ ኢናቪሽን ላይ የተመሰረቱ የአስራር ስርዓቶች ያሉት ዲጂታል መከላከያን ማየት።
+                        </p>
+                        <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#555', fontStyle: 'italic' }}>
+                            To establish digital protection systems based on Information and Communication Technology (ICT) innovation.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
             <section className="section" style={{ backgroundColor: '#fff' }}>
                 <div className="container">
-                    <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>{t('mission.title')}</h2>
+                    <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                        ተልዕኮ (Mission)
+                    </h2>
                     <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-                        <p style={{ fontSize: '1.1rem' }}>
-                            {t('mission.text')}
+                        <p style={{ fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '1rem', fontWeight: '500' }}>
+                            የኢንፎርሜሽን ኮምዩኒኬሽን ቴክኖሎጂን በማለማትና በማስፋፋት ውጤታማ የኃብት አስተዳደር፣ ደህንነቱ የጠበቀ የኢንፎርሜሽን ፍሰትና ቀልጣፋ የአይሲቲ አገልግሎት በሚረጋገጥ ተቋሙ ተልዕኮውን በብቃት እንዲወጣ መደገፍ።
+                        </p>
+                        <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#555', fontStyle: 'italic' }}>
+                            To support the institution's mission by developing and expanding ICT for efficient resource management, secure information flow, and reliable, fast IT services.
                         </p>
                     </div>
                 </div>
