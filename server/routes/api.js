@@ -1,15 +1,47 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+
+// Models
 const Project = require('../models/Project');
 const News = require('../models/News');
+const Resource = require('../models/Resource');
+const Service = require('../models/Service');
 
-// --- MOCK DATA FOR FALLBACK ---
+// --- AUTH CONFIG ---
+const JWT_SECRET = 'ministry_secret_key_123';
+const ADMIN_USER = { username: 'admin', password: 'password123' };
+
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) return res.sendStatus(401);
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
+    });
+};
+
+router.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    if (username === ADMIN_USER.username && password === ADMIN_USER.password) {
+        const token = jwt.sign({ username: username }, JWT_SECRET, { expiresIn: '1h' });
+        res.json({ token });
+    } else {
+        res.status(401).send('Invalid credentials');
+    }
+});
+
+// --- MOCK DATA ---
 const MOCK_PROJECTS = [
     {
         id: 1,
         title: "Camp Inventory Management System",
+        title_am: "የካምፕ ንብረት አስተዳደር ስርዓት",
         description: "A secure, centralized platform for tracking logistics and supplies across 5 major military bases.",
+        description_am: "በ 5 ዋና ዋና ወታደራዊ ሰፈሮች ውስጥ ሎጂስቲክስን እና አቅርቦቶችን ለመከታተል ደህንነቱ የተጠበቀ ፣-ማዕከላዊ መድረክ።",
         category: "Operational",
         technologies: ["React", "Node.js", "PostgreSQL"],
         outcome: "Auditing time reduced by 60%.",
@@ -18,7 +50,9 @@ const MOCK_PROJECTS = [
     {
         id: 2,
         title: "Military Court Management Portal",
+        title_am: "የወታደራዊ ፍርድ ቤት አስተዳደር ፖርታል",
         description: "Digitized case scheduling and document management for the legal division.",
+        description_am: "ለህግ ክፍል ዲጂታል የጉዳይ መርሃግብር እና የሰነድ አስተዳደር።",
         category: "Administrative",
         technologies: ["Angular", "Java Spring", "Encrypted DB"],
         outcome: "Eliminated paper backlog completely.",
@@ -26,21 +60,58 @@ const MOCK_PROJECTS = [
     },
     {
         id: 3,
-        title: "Cybersecurity Awareness Training Module",
-        description: "Interactive e-learning platform for all ministry personnel.",
-        category: "Training",
-        technologies: ["HTML5", "SCORM", "LMS"],
-        outcome: "Phishing susceptibility dropped by 45%.",
-        imageUrl: "https://placehold.co/600x400/2c3e50/ffffff?text=Cyber+Training"
+        title: "Secure Commsat Uplink",
+        title_am: "ደህንነቱ የተጠበቀ የግንኙነት ሳተላይት",
+        description: "Encrypted satellite uplink for field operations.",
+        description_am: "ለሜዳ ስራዎች የተመሰጠረ የሳተላይት ግንኙነት።",
+        category: "Infrastructure",
+        technologies: ["C++", "Python", "RF"],
+        outcome: "99.9% uptime during drills.",
+        imageUrl: "https://placehold.co/600x400/2c3e50/ffffff?text=Commsat"
     },
     {
         id: 4,
-        title: "Secure Comm Gateway",
-        description: "Encrypted communication channels for field operatives.",
+        title: "Recruitment Portal 2.0",
+        title_am: "የምልመላ ፖርታል 2.0",
+        description: "Streamlined application process for new cadets.",
+        description_am: "ለአዳዲስ እጩዎች የተሳለጠ የማመልከቻ ሂደት።",
+        category: "Administrative",
+        technologies: ["Vue.js", "Laravel"],
+        outcome: "Doubled application throughput.",
+        imageUrl: "https://placehold.co/600x400/2c3e50/ffffff?text=Recruitment"
+    },
+    {
+        id: 5,
+        title: "Drone Fleet Analytics",
+        title_am: "ሰው አልባ አውሮፕላን ትንታኔ",
+        description: "Real-time telemetry analysis for UAV fleet.",
+        description_am: "ለሰው አልባ አውሮፕላኖች እውነተኛ ጊዜ ቴሌሜትሪ ትንታኔ።",
+        category: "Operational",
+        technologies: ["Python", "TensorFlow"],
+        outcome: "Predictive maintenance accuracy up 40%.",
+        imageUrl: "https://placehold.co/600x400/2c3e50/ffffff?text=Drone+Analytics"
+    },
+    {
+        id: 6,
+        title: "Cyber Range Simulation",
+        title_am: "የሳይበር ክልል ማስመሰል",
+        description: "Training environment for cyber defense units.",
+        description_am: "ለሳይበር መከላከያ ክፍሎች የስልጠና አካባቢ።",
+        category: "Training",
+        technologies: ["Docker", "Kubernetes"],
+        outcome: "Trained 500+ specialists.",
+        imageUrl: "https://placehold.co/600x400/2c3e50/ffffff?text=Cyber+Range"
+    },
+    {
+        id: 7,
+        title: "Base Access Control",
+        title_am: "የመሠረት መዳረሻ ቁጥጥር",
+        description: "Biometric entry system for sensitive areas.",
+        description_am: "ለስሱ አካባቢዎች ባዮሜትሪክ መግቢያ ስርዓት።",
         category: "Infrastructure",
-        technologies: ["Rust", "WebAssembly"],
-        outcome: "Zero breaches in pilot phase.",
-        imageUrl: "https://placehold.co/600x400/2c3e50/ffffff?text=Secure+Gateway"
+        technologies: ["IoT", "Go"],
+        outcome: "Zero unauthorized entries.",
+        imageUrl: "https://placehold.co/600x400/2c3e50/ffffff?text=Access+Control"
     }
 ];
 
@@ -48,229 +119,471 @@ const MOCK_NEWS = [
     {
         id: 101,
         title: "ICT Office Launches New Secure Gateway",
-        summary: "Enhanced border protocols now active for all internal networks. This major upgrade ensures...",
-        content: "The ICT Office is proud to announce the full deployment of our new Secure Gateway protocol. This system introduces multi-layer encryption for all cross-border data traffic, ensuring that sensitive ministry operations remain impervious to interception. The rollout covers all 15 regional command centers.",
+        title_am: "የአይሲቲ ቢሮ አዲስ ደህንነቱ የተጠበቀ መግቢያ ጀመረ",
+        summary: "Enhanced border protocols now active for all internal networks.",
+        summary_am: "የተሻሻሉ የድንበር ፕሮቶኮሎች አሁን ለሁሉም የውስጥ አውታረ መረቦች ንቁ ናቸው።",
+        content: "The ICT Office is proud to announce the full deployment of our new Secure Gateway protocol.",
+        content_am: "የአይሲቲ ቢሮ የአዲሱን ደህንነቱ የተጠበቀ መግቢያ ፕሮቶኮላችንን ሙሉ በሙሉ መዘርጋቱን በኩራት ያስታውቃል።",
         important: true,
         date: new Date('2025-10-15'),
-        imageUrl: "https://placehold.co/800x400/27ae60/ffffff?text=Secure+Gateway+Launch"
+        imageUrl: "https://placehold.co/800x400/27ae60/ffffff?text=Secure+Gateway"
     },
     {
         id: 102,
-        title: "Annual Hackathon Winners Announced",
-        summary: "Team Alpha took first place with their drone detection algorithm.",
-        content: "After 48 hours of intense coding, Team Alpha from the Cyber Defense Unit emerged victorious. Their innovative algorithm for detecting low-altitude commercial drones using existing radio infrastructure has already been fast-tracked for prototyping.",
+        title: "Cybersecurity Awareness Month Kicks Off",
+        title_am: "የሳይበር ደህንነት ግንዛቤ ወር ተጀመረ",
+        summary: "Join us for workshops and seminars throughout October.",
+        summary_am: "በጥቅምት ወር በሙሉ ለአውደ ጥናቶች እና ሴሚናሮች ይቀላቀሉ።",
+        content: "October is Cybersecurity Awareness Month. We are hosting a series of events.",
+        content_am: "ጥቅምት የሳይበር ደህንነት ግንዛቤ ወር ነው። ተከታታይ ዝግጅቶችን እያዘጋጀን ነው።",
         important: false,
-        date: new Date('2025-11-20'),
-        imageUrl: "https://placehold.co/800x400/2980b9/ffffff?text=Hackathon+Winners"
+        date: new Date('2025-10-01'),
+        imageUrl: "https://placehold.co/800x400/27ae60/ffffff?text=Awareness"
     },
     {
         id: 103,
-        title: "New Cloud Infrastructure Training",
-        summary: "Mandatory upskilling for all IT personnel starting next month.",
-        content: "To support our shift to a hybrid cloud architecture, the ICT Office is launching a comprehensive training program. All certified sysadmins are required to complete the 'Secure Cloud Ops' module by Q1 2026.",
+        title: "System Maintenance Scheduled",
+        title_am: "የስርዓት ጥገና ተይዟል",
+        summary: "Downtime expected this weekend for server upgrades.",
+        summary_am: "ለአገልጋይ ማሻሻያዎች በዚህ ሳምንት መጨረሻ የእረፍት ጊዜ ይጠበቃል።",
+        content: "Please be advised that critical systems will be offline from Saturday 2200 to Sunday 0600.",
+        content_am: "እባክዎን ወሳኝ ስርዓቶች ከቅዳሜ 2200 እስከ እሁድ 0600 ከመስመር ውጭ እንደሚሆኑ ይወቁ።",
+        important: true,
+        date: new Date('2025-09-28'),
+        imageUrl: "https://placehold.co/800x400/c0392b/ffffff?text=Maintenance"
+    },
+    {
+        id: 104,
+        title: "New AI Research Initiative",
+        title_am: "አዲስ የኤአይ ምርምር ተነሳሽነት",
+        summary: "Partnering with universities for defense AI research.",
+        summary_am: "ከዩኒቨርሲቲዎች ጋር ለመከላከያ ኤአይ ምርምር አጋርነት።",
+        content: "We are excited to announce a new grant program for AI research in defense applications.",
+        content_am: "በመከላከያ መተግበሪያዎች ውስጥ ለኤአይ ምርምር አዲስ የእርዳታ ፕሮግራም በማስታወቅ ደስተኞች ነን።",
         important: false,
-        date: new Date('2025-12-05'),
-        imageUrl: "https://placehold.co/800x400/e67e22/ffffff?text=Cloud+Training"
+        date: new Date('2025-09-20'),
+        imageUrl: "https://placehold.co/800x400/27ae60/ffffff?text=AI+Research"
+    },
+    {
+        id: 105,
+        title: "Staff Promotion Ceremony",
+        title_am: "የሰራተኞች እድገት ሥነ ሥርዓት",
+        summary: "Celebrating the achievements of our technical staff.",
+        summary_am: "የቴክኒክ ሰራተኞቻችንን ስኬቶች በማክበር ላይ።",
+        content: "Congratulations to all the newly promoted officers and civilian staff.",
+        content_am: "ለአዳዲስ እድገት ላገኙ መኮንኖች እና ሲቪል ሰራተኞች በሙሉ እንኳን ደስ አላችሁ።",
+        important: false,
+        date: new Date('2025-09-15'),
+        imageUrl: "https://placehold.co/800x400/27ae60/ffffff?text=Promotions"
+    },
+    {
+        id: 106,
+        title: "Cloud Migration Complete",
+        title_am: "የደመና ሽግግር ተጠናቀቀ",
+        summary: "All non-sensitive workloads moved to private cloud.",
+        summary_am: "ሁሉም ጥንቃቄ የሌላቸው የስራ ጫናዎች ወደ የግል ደመና ተወስደዋል።",
+        content: "The multi-year cloud migration project has officially concluded ahead of schedule.",
+        content_am: "የብዝሃ-ዓመት የደመና ሽግግር ፕሮጀክት ከመርሃግብሩ በፊት በይፋ ተጠናቅቋል።",
+        important: false,
+        date: new Date('2025-09-01'),
+        imageUrl: "https://placehold.co/800x400/27ae60/ffffff?text=Cloud"
+    },
+    {
+        id: 107,
+        title: "Vendor Tech Expo 2025",
+        title_am: "አቅራቢ ቴክ ኤክስፖ 2025",
+        summary: "Upcoming exhibition of latest defense technologies.",
+        summary_am: "መጪው የመከላከያ ቴክኖሎጂዎች ኤግዚቢሽን።",
+        content: "Registration is now open for the annual Vendor Tech Expo.",
+        content_am: "ለዓመታዊው የአቅራቢ ቴክ ኤክስፖ ምዝገባ አሁን ክፍት ነው።",
+        important: false,
+        date: new Date('2025-08-25'),
+        imageUrl: "https://placehold.co/800x400/27ae60/ffffff?text=Tech+Expo"
     }
 ];
-
-// Helper to check DB status
-// If readyState is 1 (connected), return true. Otherwise false.
-const isDbConnected = () => mongoose.connection.readyState === 1;
-
-// --- PROJECTS ENDPOINTS ---
-
-router.get('/projects', async (req, res) => {
-    // console.log('GET /projects'); // Debug
-    try {
-        const { category, search } = req.query;
-
-        if (!isDbConnected()) {
-            // console.log('Serving Mock Projects');
-            let data = [...MOCK_PROJECTS];
-            if (category && category !== 'All') {
-                data = data.filter(p => p.category === category);
-            }
-            if (search) {
-                const lowerSearch = search.toLowerCase();
-                data = data.filter(p => p.title.toLowerCase().includes(lowerSearch) || p.description.toLowerCase().includes(lowerSearch));
-            }
-            return res.json(data);
-        }
-
-        let query = {};
-        if (category && category !== 'All') {
-            query.category = category;
-        }
-        if (search) {
-            query.$or = [
-                { title: { $regex: search, $options: 'i' } },
-                { description: { $regex: search, $options: 'i' } }
-            ];
-        }
-
-        const projects = await Project.find(query).sort({ createdAt: -1 });
-        if (projects.length === 0) {
-            console.warn('Database Empty. Serving mock projects.');
-            return res.json(MOCK_PROJECTS);
-        }
-        res.json(projects);
-    } catch (err) {
-        console.error("API Error:", err);
-        res.json(MOCK_PROJECTS);
-    }
-});
-
-// --- NEWS ENDPOINTS ---
-
-router.get('/news', async (req, res) => {
-    // console.log('GET /news');
-    try {
-        if (!isDbConnected()) {
-            return res.json(MOCK_NEWS);
-        }
-
-        const news = await News.find().sort({ date: -1 }).limit(10);
-        if (news.length === 0) {
-            console.warn('Database Empty. Serving mock news.');
-            return res.json(MOCK_NEWS);
-        }
-        res.json(news);
-    } catch (err) {
-        console.error("API Error:", err);
-        res.json(MOCK_NEWS);
-    }
-});
-
-router.get('/news/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        if (!isDbConnected()) {
-            const item = MOCK_NEWS.find(n => n.id == id);
-            return item ? res.json(item) : res.status(404).json({ message: 'News not found' });
-        }
-
-        const item = await News.findById(id);
-        res.json(item);
-    } catch (err) {
-        // Fallback for ID mismatch or error
-        const item = MOCK_NEWS.find(n => n.id == req.params.id);
-        return item ? res.json(item) : res.status(404).json({ message: 'News not found' });
-    }
-});
-
-const Resource = require('../models/Resource');
 
 const MOCK_RESOURCES = [
     {
         id: 201,
         title: "Securing the Digital Supply Chain",
+        title_am: "የዲጂታል አቅርቦት ሰንሰለትን ደህንነት መጠበቅ",
         type: "Whitepaper",
         summary: "Best practices for vetting third-party software vendors in defense contracts.",
-        content: "Supply chain attacks are rising. This whitepaper outlines the new 'verify-then-trust' framework adopted by the Ministry for all software procurement. It details the required SBOM (Software Bill of Materials) standards and the continuous monitoring protocols for deployed dependencies.",
-        author: "Chief Information Security Officer",
-        tags: ["Security", "Supply Chain", "Policy"],
+        summary_am: "በመከላከያ ኮንትራቶች ውስጥ የሶስተኛ ወገን ሶፍትዌር አቅራቢዎችን ለመመርመር ምርጥ ልምዶች።",
+        content: "Supply chain attacks are rising. This whitepaper outlines the new 'verify-then-trust' framework.",
+        content_am: "የአቅርቦት ሰንሰለት ጥቃቶች እየጨመሩ ነው። ይህ ነጭ ወረቀት አዲሱን 'አረጋግጥ-ከዚያ-እመን' ማዕቀፍ ይዘረዝራል።",
+        author: "CISO",
+        tags: ["Security", "Policy"],
         date: new Date('2025-09-10'),
-        imageUrl: "https://placehold.co/600x400/2c3e50/ffffff?text=Supply+Chain+Security"
+        imageUrl: "https://placehold.co/600x400/2980b9/ffffff?text=Supply+Chain"
     },
     {
         id: 202,
-        title: "Intro to Post-Quantum Cryptography",
-        type: "Tutorial",
-        summary: "A primer on lattice-based cryptography and migration strategies for legacy systems.",
-        content: "As quantum computing approaches viability, current RSA encryption methods become vulnerable. This tutorial breaks down the math behind lattice-based cryptography and provides a step-by-step guide for developers to start testing PQC algorithms in their non-classified environments using the new Ministry CryptoLib v4.",
-        author: "Dr. A. Turing",
-        tags: ["Cryptography", "Quantum", "DevOps"],
-        date: new Date('2025-10-05'),
-        imageUrl: "https://placehold.co/600x400/8e44ad/ffffff?text=Quantum+Crypto"
+        title: "React Style Guide",
+        title_am: "የ React ዘይቤ መመሪያ",
+        type: "Article",
+        summary: "Internal standards for frontend development.",
+        summary_am: "ለፊት ለፊት ልማት የውስጥ ደረጃዎች።",
+        content: "Consistent code style is key. Follow these guidelines for all new React projects.",
+        content_am: "ወጥ የሆነ የኮድ ዘይቤ ቁልፍ ነው። ለሁሉም አዳዲስ የ React ፕሮጀክቶች እነዚህን መመሪያዎች ይከተሉ።",
+        author: "Lead Dev",
+        tags: ["Development", "React"],
+        date: new Date('2025-08-15'),
+        imageUrl: "https://placehold.co/600x400/2980b9/ffffff?text=Style+Guide"
     },
     {
         id: 203,
-        title: "AI Ethics in Autonomous Systems",
+        title: "Intro to Kubernetes",
+        title_am: "የ Kubernetes መግቢያ",
+        type: "Tutorial",
+        summary: "Getting started with container orchestration.",
+        summary_am: "በመያዣ ኦርኬስትራ መጀመር።",
+        content: "Learn the basics of Pods, Services, and Deployments in this hands-on lab.",
+        content_am: "በዚህ በተግባራዊ ላብራቶሪ ውስጥ ስለ Pods ፣ Services እና Deployments መሰረታዊ ነገሮችን ይወቁ።",
+        author: "DevOps Team",
+        tags: ["DevOps", "Kubernetes"],
+        date: new Date('2025-08-01'),
+        imageUrl: "https://placehold.co/600x400/2980b9/ffffff?text=K8s+101"
+    },
+    {
+        id: 204,
+        title: "Zero Trust Architecture",
+        title_am: "ዜሮ እምነት አርክቴክቸር",
+        type: "Whitepaper",
+        summary: "Moving beyond perimeter defense.",
+        summary_am: "ከወሰን መከላከያ ባሻገር መንቀሳቀስ።",
+        content: "Why the castle-and-moat security model is obsolete.",
+        content_am: "ለምን የቤተመንግስት-እና-ሞት የደህንነት ሞዴል ጊዜ ያለፈበት ነው።",
+        author: "Architecture Board",
+        tags: ["Security", "Architecture"],
+        date: new Date('2025-07-20'),
+        imageUrl: "https://placehold.co/600x400/2980b9/ffffff?text=Zero+Trust"
+    },
+    {
+        id: 205,
+        title: "Git Workflow Standards",
+        title_am: "የ Git የስራ ፍሰት ደረጃዎች",
         type: "Article",
-        summary: "Defining the boundaries of AI decision-making in kinetic environments.",
-        content: "The ethical deployment of AI in autonomous defense systems is paramount. This article explores the 'Human-on-the-Loop' doctrine, ensuring that lethal force decisions always retain human oversight while leveraging AI for rapid threat identification and trajectory analysis.",
-        author: "Strategic Studies Group",
-        tags: ["AI", "Ethics", "Policy"],
-        date: new Date('2025-11-12'),
-        imageUrl: "https://placehold.co/600x400/27ae60/ffffff?text=AI+Ethics"
+        summary: "Branching strategies and commit message conventions.",
+        summary_am: "የቅርንጫፍ ስልቶች እና የገቡ መልእክት ስምምነቶች።",
+        content: "We use trunk-based development with short-lived feature branches.",
+        content_am: "እኛ በአጭር ጊዜ የመተግበሪያ ቅርንጫፎች አማካኝነት በግንድ ላይ የተመሠረተ ልማት እንጠቀማለን።",
+        author: "Tech Lead",
+        tags: ["Development", "Git"],
+        date: new Date('2025-07-10'),
+        imageUrl: "https://placehold.co/600x400/2980b9/ffffff?text=Git+Workflow"
+    },
+    {
+        id: 206,
+        title: "Secure Coding Practices",
+        title_am: "ደህንነቱ የተጠበቀ የኮድ አሰራሮች",
+        type: "Tutorial",
+        summary: "OWASP Top 10 mitigation strategies.",
+        summary_am: "የ OWASP ምርጥ 10 የመቀነስ ስልቶች።",
+        content: "How to prevent SQL injection, XSS, and other common vulnerabilities.",
+        content_am: "የ SQL መርፌን ፣ XSS ን እና ሌሎች የተለመዱ ተጋላጭነቶችን እንዴት መከላከል እንደሚቻል።",
+        author: "Security Team",
+        tags: ["Security", "Development"],
+        date: new Date('2025-06-25'),
+        imageUrl: "https://placehold.co/600x400/2980b9/ffffff?text=Secure+Code"
+    },
+    {
+        id: 207,
+        title: "Legacy System Decommissioning",
+        title_am: "የድሮ ስርዓት ማሰናበት",
+        type: "Whitepaper",
+        summary: "Roadmap for retiring the mainframe.",
+        summary_am: "ዋናውን ፍሬም ጡረታ ለማውጣት የመንገድ ካርታ።",
+        content: "Steps to safely migrate off the legacy mainframe by 2026.",
+        content_am: "በ 2026 ከድሮው ዋና ፍሬም በደህና ለመሰደድ ደረጃዎች።",
+        author: "CIO",
+        tags: ["Strategy", "Legacy"],
+        date: new Date('2025-06-01'),
+        imageUrl: "https://placehold.co/600x400/2980b9/ffffff?text=Legacy+End"
     }
 ];
 
-// --- RESOURCES ENDPOINTS ---
+const MOCK_SERVICES = [
+    {
+        title: "Web System Development",
+        title_am: "የድር ስርዓት ልማት",
+        description: "Custom secure web applications tailored to defense needs.",
+        description_am: "ለባዲ መከላከያ ፍላጎቶች የተዘጋጀ የድር መተግበሪያ።",
+        icon: "fa-code"
+    },
+    {
+        title: "IT Infrastructure",
+        title_am: "የአይቲ መሰረተ ልማት",
+        description: "Robust networking and server management.",
+        description_am: "ጠንካራ አውታረ መረብ እና አገልጋይ አያያዝ።",
+        icon: "fa-server"
+    },
+    {
+        title: "Cybersecurity",
+        title_am: "ሳይበር ደህንነት",
+        description: "Vulnerability assessments and secure coding audits.",
+        description_am: "የተጋላጭነት ግምገማዎች እና ደህንነቱ የተጠበቀ የኮድ ኦዲት።",
+        icon: "fa-shield-alt"
+    },
+    {
+        title: "Digital Training",
+        title_am: "ዲጂታል ስልጠና",
+        description: "Upskilling personnel in modern digital tools.",
+        description_am: "በዘመናዊ ዲጂታል መሳሪያዎች ውስጥ የሰው ኃይል ማሳደግ።",
+        icon: "fa-chalkboard-teacher"
+    },
+    {
+        title: "Software Development",
+        title_am: "ሶፍትዌር ልማት",
+        description: "End-to-end software solutions for various operational needs.",
+        description_am: "ለተለያዩ የአሰራር ፍላጎቶች የመጨረሻ-እስከ-መጨረሻ የሶፍትዌር መፍትሄዎች።",
+        icon: "fa-laptop-code"
+    },
+    {
+        title: "Database Administration",
+        title_am: "የመረጃ ቋት አስተዳደር",
+        description: "Secure and efficient database management and optimization.",
+        description_am: "ደህንነቱ የተጠበቀ እና ቀልጣፋ የመረጃ ቋት አያያዝ እና ማመቻቸት።",
+        icon: "fa-database"
+    },
+    {
+        title: "Organization System Development Department",
+        title_am: "የአደራጃት ሲስተም ልማት መምሪያ",
+        description: "Includes System Enhancement Group, Human Resource Study and Diagnostics Group.",
+        description_am: "የሲስተም ማበልጸጊያ ቡድን፣ የሰው ኃይል ጥናት እና ዲያግኖስቲክስ ቡድን።",
+        icon: "fa-sitemap"
+    },
+    {
+        title: "Data Center Service Administration Department",
+        title_am: "የዳታ ማዕከል አገልግሎት አስተዳደር መምሪያ",
+        description: "Includes Network Operations Group, Database and Web Administration Group, Organization Security Administration Group.",
+        description_am: "የኔትወርክ ኦፕሬሽን ቡድን፣ የዳታ ቤዝ እና ዌብ አስተዳደር ቡድን፣ የአደራጃት ደህንነት አስተዳደር ቡድን።",
+        icon: "fa-server"
+    },
+    {
+        title: "Infrastructure Preparation and Study Department",
+        title_am: "የአደራጃት የመሰረተ ልማት ዝግጅትና ማጥናት መምሪያ",
+        description: "Includes Network Installation and Study Group, Organization Technical Maintenance Group.",
+        description_am: "የኔትወርክ ዝርጋታ እና ማጥናት ቡድን፣ የአደራጃት የቴክኒክ ጥገና ቡድን።",
+        icon: "fa-network-wired"
+    }
+];
 
-router.get('/resources', async (req, res) => {
-    try {
-        const { type, search } = req.query;
+const isDbConnected = () => mongoose.connection.readyState === 1;
 
-        if (!isDbConnected()) {
-            let data = [...MOCK_RESOURCES];
-            if (type && type !== 'All') {
-                data = data.filter(r => r.type === type);
-            }
+// --- GENERIC CRUD HANDLER ---
+// This simplifies creating uniform endpoints for all types
+const createCrudEndpoints = (routePrefix, Model, mockData) => {
+    // GET ALL with Filtering, Search & Pagination
+    router.get(routePrefix, async (req, res) => {
+        try {
+            const { category, type, search, page = 1, limit = 6 } = req.query;
+            const pageNum = parseInt(page);
+            const limitNum = parseInt(limit);
+
+            // Build Query
+            let query = {};
+            if (category && category !== 'All') query.category = category;
+            if (type && type !== 'All') query.type = type;
+
             if (search) {
-                const lowerSearch = search.toLowerCase();
-                data = data.filter(r => r.title.toLowerCase().includes(lowerSearch) || r.tags.some(t => t.toLowerCase().includes(lowerSearch)));
+                const searchRegex = { $regex: search, $options: 'i' };
+                query.$or = [
+                    { title: searchRegex },
+                    { description: searchRegex },
+                    { summary: searchRegex },
+                    { tags: searchRegex }
+                ];
             }
-            return res.json(data);
-        }
 
-        let query = {};
-        if (type && type !== 'All') {
-            query.type = type;
-        }
-        if (search) {
-            query.$or = [
-                { title: { $regex: search, $options: 'i' } },
-                { 'tags': { $regex: search, $options: 'i' } }
-            ];
-        }
+            // Determine if we should use DB or Mock
+            let useDb = isDbConnected();
+            if (useDb) {
+                const dbGlobalCount = await Model.countDocuments({});
+                if (dbGlobalCount === 0) { useDb = false; }
+            }
 
-        const resources = await Resource.find(query).sort({ date: -1 });
-        if (resources.length === 0) {
-            console.warn('Database Empty. Serving mock resources.');
-            return res.json(MOCK_RESOURCES);
-        }
-        res.json(resources);
-    } catch (err) {
-        console.error("API Error:", err);
-        res.json(MOCK_RESOURCES);
-    }
-});
+            if (!useDb) {
+                let data = [...mockData];
+                if (category && category !== 'All') data = data.filter(i => i.category === category);
+                if (type && type !== 'All') data = data.filter(i => i.type === type);
+                if (search) {
+                    const lc = search.toLowerCase();
+                    data = data.filter(i =>
+                        (i.title && i.title.toLowerCase().includes(lc)) ||
+                        (i.description && i.description.toLowerCase().includes(lc)) ||
+                        (i.summary && i.summary.toLowerCase().includes(lc)) ||
+                        (i.tags && i.tags.some(t => t.toLowerCase().includes(lc)))
+                    );
+                }
 
-router.get('/resources/:id', async (req, res) => {
+                // Pagination for Mock Data
+                const totalItems = data.length;
+                const totalPages = Math.ceil(totalItems / limitNum);
+                const startIndex = (pageNum - 1) * limitNum;
+                const paginatedData = data.slice(startIndex, startIndex + limitNum);
+
+                return res.json({
+                    data: paginatedData,
+                    pagination: {
+                        currentPage: pageNum,
+                        totalPages: totalPages,
+                        totalItems: totalItems,
+                        hasNextPage: pageNum < totalPages,
+                        hasPrevPage: pageNum > 1
+                    }
+                });
+            }
+
+            // Pagination for DB
+            const totalItems = await Model.countDocuments(query);
+            const totalPages = Math.ceil(totalItems / limitNum);
+            const items = await Model.find(query)
+                .sort({ createdAt: -1, date: -1 })
+                .skip((pageNum - 1) * limitNum)
+                .limit(limitNum);
+
+            // Fallback to mock data if DB empty (optional, but per original logic)
+            if (items.length === 0 && totalItems === 0 && !search && (!category || category === 'All') && (!type || type === 'All')) {
+                // Even if DB is connected but empty, returns mock data? 
+                // The original logic was: res.json(items.length ? items : mockData);
+                // We should replicate that behavior but paginated.
+                // It gets complicated mixing them. Let's assume if DB is connected, we use DB.
+                // If the user wants to see data, they should seed it using the seed endpoint.
+            }
+
+            res.json({
+                data: items.length > 0 ? items : (totalItems === 0 && !search ? [] : []), // If no items found in DB...
+                pagination: {
+                    currentPage: pageNum,
+                    totalPages: totalPages,
+                    totalItems: totalItems,
+                    hasNextPage: pageNum < totalPages,
+                    hasPrevPage: pageNum > 1
+                }
+            });
+
+        } catch (err) { res.status(500).json({ error: err.message }); }
+    });
+
+    // GET SINGLE (Hybrid Strategy: Try DB, then Mock)
+    // Note: This logic remains largely same, just extracted for clarity
+    router.get(`${routePrefix}/:id`, async (req, res) => {
+        try {
+            const { id } = req.params;
+            let item = null;
+
+            // 1. Try DB if connected and ID is valid MongoDB ID
+            if (isDbConnected() && mongoose.Types.ObjectId.isValid(id)) {
+                // Increment views for News
+                if (routePrefix === '/news') {
+                    item = await Model.findByIdAndUpdate(id, { $inc: { views: 1 } }, { new: true });
+                } else {
+                    item = await Model.findById(id);
+                }
+            }
+
+            // 2. If not found in DB (or invalid ID), try Mock Data
+            if (!item) {
+                // Mock IDs are numbers
+                const mockIndex = mockData.findIndex(i => i.id == id || i._id == id);
+                if (mockIndex !== -1) {
+                    if (routePrefix === '/news') {
+                        mockData[mockIndex].views = (mockData[mockIndex].views || 0) + 1;
+                    }
+                    item = mockData[mockIndex];
+                }
+            }
+
+            if (item) {
+                res.json(item);
+            } else {
+                res.status(404).json({ message: 'Not Found' });
+            }
+        } catch (err) {
+            console.error(`Error fetching ${routePrefix}/${req.params.id}:`, err);
+            const fallbackItem = mockData.find(i => i.id == req.params.id);
+            fallbackItem ? res.json(fallbackItem) : res.status(500).json({ error: err.message });
+        }
+    });
+
+    // CREATE
+    router.post(routePrefix, authenticateToken, async (req, res) => {
+        try {
+            if (!isDbConnected()) {
+                const newItem = { ...req.body, id: Date.now(), _id: Date.now().toString(), views: 0 };
+                mockData.unshift(newItem);
+                return res.status(201).json(newItem);
+            }
+            const newItem = await Model.create({ ...req.body, views: 0 });
+            res.status(201).json(newItem);
+        } catch (err) { res.status(500).json({ error: err.message }); }
+    });
+};
+
+// ... CRUD INITS ...
+createCrudEndpoints('/projects', Project, MOCK_PROJECTS);
+createCrudEndpoints('/news', News, MOCK_NEWS);
+createCrudEndpoints('/resources', Resource, MOCK_RESOURCES);
+createCrudEndpoints('/services', Service, MOCK_SERVICES);
+
+// --- STATS ENDPOINT ---
+router.get('/stats', authenticateToken, async (req, res) => {
     try {
-        const { id } = req.params;
-        if (!isDbConnected()) {
-            const item = MOCK_RESOURCES.find(r => r.id == id);
-            return item ? res.json(item) : res.status(404).json({ message: 'Resource not found' });
+        let stats = {
+            projects: MOCK_PROJECTS.length,
+            news: MOCK_NEWS.length,
+            resources: MOCK_RESOURCES.length,
+            services: MOCK_SERVICES.length,
+            totalViews: MOCK_NEWS.reduce((acc, curr) => acc + (curr.views || 0), 0),
+            topNews: MOCK_NEWS.sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5)
+        };
+
+        if (isDbConnected()) {
+            const [pCount, nCount, rCount, sCount, newsData] = await Promise.all([
+                Project.countDocuments(),
+                News.countDocuments(),
+                Resource.countDocuments(),
+                Service.countDocuments(),
+                News.find().sort({ views: -1 }).limit(5)
+            ]);
+
+            // Calculate total views from DB
+            const allNews = await News.find({}, 'views');
+            const totalViews = allNews.reduce((acc, curr) => acc + (curr.views || 0), 0);
+
+            stats = {
+                projects: pCount,
+                news: nCount,
+                resources: rCount,
+                services: sCount,
+                totalViews,
+                topNews: newsData
+            };
         }
 
-        const item = await Resource.findById(id);
-        res.json(item);
+        res.json(stats);
     } catch (err) {
-        // Fallback
-        const item = MOCK_RESOURCES.find(r => r.id == req.params.id);
-        return item ? res.json(item) : res.status(404).json({ message: 'Resource not found' });
+        res.status(500).json({ error: err.message });
     }
 });
+
+
+// --- SEED ENDPOINT ---
 router.post('/seed', async (req, res) => {
     try {
-        if (!isDbConnected()) {
-            return res.status(200).json({ message: "Database Disconnected: Using In-Memory Mock Data (No action needed)" });
-        }
+        if (!isDbConnected()) return res.json({ message: "DB not connected, using mock data" });
 
         await Project.deleteMany({});
         await News.deleteMany({});
         await Resource.deleteMany({});
-        await Project.insertMany(MOCK_PROJECTS);
-        await News.insertMany(MOCK_NEWS);
-        await Resource.insertMany(MOCK_RESOURCES);
+        await Service.deleteMany({});
 
-        res.json({ message: "Database seeded successfully" });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+        // Add some basic seed data if needed here
+        await Service.insertMany(MOCK_SERVICES);
+
+        res.json({ message: "Database Cleared & Ready" });
+    } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 module.exports = router;

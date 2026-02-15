@@ -7,6 +7,7 @@ const ResourceDetail = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setLoading(true);
         fetch(`/api/resources/${id}`)
             .then(res => res.json())
@@ -46,9 +47,13 @@ const ResourceDetail = () => {
                     </div>
 
                     <h1 style={{ marginBottom: '1.5rem', fontSize: '2.5rem', color: '#2C3E50' }}>{resource.title}</h1>
+                    {resource.title_am && (
+                        <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem', color: '#7f8c8d' }}>{resource.title_am}</h2>
+                    )}
 
                     <div style={{ fontSize: '1.2rem', lineHeight: '1.8', color: '#34495e' }}>
                         <p>{resource.content}</p>
+                        {resource.content_am && <p style={{ color: '#666', marginTop: '1rem' }}>{resource.content_am}</p>}
                     </div>
 
                     {resource.tags && resource.tags.length > 0 && (

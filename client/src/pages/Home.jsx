@@ -11,7 +11,9 @@ const Home = () => {
         fetch('/api/projects')
             .then(res => res.json())
             .then(data => {
-                if (Array.isArray(data)) {
+                if (data.data && Array.isArray(data.data)) {
+                    setFeaturedProjects(data.data.slice(0, 3));
+                } else if (Array.isArray(data)) {
                     setFeaturedProjects(data.slice(0, 3));
                 } else {
                     console.error('API returned non-array:', data);

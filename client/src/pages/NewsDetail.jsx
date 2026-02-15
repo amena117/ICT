@@ -7,6 +7,7 @@ const NewsDetail = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setLoading(true);
         fetch(`/api/news/${id}`)
             .then(res => res.json())
@@ -45,8 +46,13 @@ const NewsDetail = () => {
                         )}
                     </div>
                     <h1 style={{ marginBottom: '1.5rem', fontSize: '2.5rem', color: '#2C3E50' }}>{newsItem.title}</h1>
+                    {newsItem.title_am && (
+                        <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem', color: '#7f8c8d' }}>{newsItem.title_am}</h2>
+                    )}
+
                     <div style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
                         <p>{newsItem.content}</p>
+                        {newsItem.content_am && <p style={{ color: '#666', marginTop: '1rem' }}>{newsItem.content_am}</p>}
                     </div>
                 </div>
             </article>

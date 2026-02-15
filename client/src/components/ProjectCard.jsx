@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ProjectCard = ({ project }) => {
     return (
@@ -13,6 +14,9 @@ const ProjectCard = ({ project }) => {
                 <div style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#666' }}>
                     <strong>Outcome:</strong> {project.outcome}
                 </div>
+                <Link to={`/projects/${project.id || project._id}`} className="btn btn-secondary" style={{ marginTop: '1rem', display: 'inline-block', padding: '0.4rem 0.8rem', fontSize: '0.9rem' }}>
+                    View Details
+                </Link>
             </div>
         </div>
     );
