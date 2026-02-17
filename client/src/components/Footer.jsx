@@ -5,8 +5,8 @@ const Footer = () => {
         <footer>
             <div className="container footer-content">
                 <div className="footer-col">
-                    <h3>ICT Office</h3>
-                    <p>Delivering secure, innovative web systems for the Ministry of Defense.</p>
+                    <h3>ICT </h3>
+                    <p>Delivering secure, innovative ICT solutions for national defense</p>
                 </div>
                 <div className="footer-col">
                     <h3>Quick Links</h3>
@@ -22,11 +22,11 @@ const Footer = () => {
                     <h3>Contact</h3>
                     <p>Defense HQ, Building C</p>
                     <p>secure.comms@mod.gov.ct</p>
-                    <p>+123 456 7890</p>
+                    <p>+151 000 0000</p>
                 </div>
             </div>
             <div className="footer-bottom">
-                <p>&copy; 2025 ICT Office - Ministry of Defense. Secure. Compliant.</p>
+                <p>&copy; 2025 ICT  - Ministry of Defense. Secure. Compliant.</p>
             </div>
         </footer>
     );

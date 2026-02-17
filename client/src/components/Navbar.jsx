@@ -15,7 +15,7 @@ const Navbar = () => {
         <header>
             <div className="container navbar">
                 <Link to="/" className="logo">
-                    <span>🛡️</span> ICT Office
+                    <span>🛡️</span> ICT 
                 </Link>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
