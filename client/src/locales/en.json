@@ -11,7 +11,8 @@
   "hero": {
     "title": "Securing the Digital Frontier",
     "subtitle": "Delivering secure, innovative ICT solutions for national defense.",
-    "explore": "Explore Projects"
+    "explore": "Explore Operations",
+    "contact": "Command Contact"
   },
   "goal": {
     "title": "Goal",
@@ -22,11 +23,30 @@
     "text": "To support the institution's mission by developing and expanding ICT for efficient resource management, secure information flow, and reliable, fast IT services."
   },
   "featured": {
-    "title": "Featured Projects",
-    "loading": "Loading secure data..."
+    "title": "Key Initiatives",
+    "loading": "Loading secure data...",
+    "subtitle": "Strategic ICT Projects",
+    "description": "Critical infrastructure and technology deployments enhancing defense capabilities"
+  },
+  "systemStatus": {
+    "title": "Network Operations Center",
+    "subtitle": "Real-time monitoring of critical ICT infrastructure and data systems",
+    "label": "SYSTEM STATUS"
+  },
+  "metrics": {
+    "networkNodes": "Network Nodes",
+    "dataThroughput": "Data Throughput",
+    "securityStatus": "Security Status",
+    "uptime": "Uptime",
+    "active": "Active"
+  },
+  "network": {
+    "title": "Infrastructure Architecture",
+    "subtitle": "Secure, resilient network topology connecting critical defense systems",
+    "label": "NETWORK TOPOLOGY"
   },
   "future": {
-    "title": "Future Initiatives 2030",
+    "title": "Future Technologies",
     "ai": "AI Defense",
     "ai_desc": "Integrating autonomous threat detection algorithms into national grid systems.",
     "quantum": "Quantum Cryptography",
@@ -36,5 +56,33 @@
   },
   "testimonials": {
     "title": "Trusted by Defense Leaders"
+  },
+  "services": {
+    "title": "Defense Technology Services",
+    "subtitle": "Comprehensive ICT, networking, and data management solutions for military operations.",
+    "label": "ICT CAPABILITIES",
+    "loading": "Loading services...",
+    "noServices": "No services found. Please add them via the Admin Dashboard.",
+    "viewDetails": "View Details"
+  },
+  "projects": {
+    "title": "Our Portfolio",
+    "subtitle": "Showcasing our contributions to defense digital transformation.",
+    "label": "OUR PORTFOLIO",
+    "loading": "Loading projects...",
+    "noProjects": "No projects found matching your criteria.",
+    "search": "Search projects...",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "showing": "Showing",
+    "projects": "projects",
+    "outcome": "Outcome:"
+  },
+  "common": {
+    "language": "Language",
+    "english": "English",
+    "amharic": "አማርኛ"
   }
 }

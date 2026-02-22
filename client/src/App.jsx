@@ -21,9 +21,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="App min-h-screen flex flex-col">
         <Navbar />
-        <main style={{ minHeight: '80vh' }}>
+        <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/projects" element={<Projects />} />
