@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import logo from '../assets/Emblem_of_the_Ethiopian_National_Defense_Force_(2).svg.png';
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
@@ -60,9 +61,11 @@ const Footer = () => {
                     {/* Brand Column */}
                     <motion.div variants={itemVariants} className="space-y-4">
                         <div className="flex items-center gap-3 mb-6">
-                            <span className="text-4xl">🛡️</span>
+                            <div className="w-12 h-12 flex items-center justify-center">
+                                <img src={logo} alt="Logo" className="w-full h-full object-contain" />
+                            </div>
                             <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-ethiopian-green/80 bg-clip-text text-transparent">
-                                ICT 
+                                ICT
                             </h3>
                         </div>
                         <p className="text-gray-300 leading-relaxed text-lg">
