@@ -5,7 +5,9 @@ import ProjectCard from '../components/ProjectCard';
 import NetworkVisualization from '../components/NetworkVisualization';
 import DataMetrics from '../components/DataMetrics';
 import TechPattern from '../components/TechPattern';
+import CamouflagePattern from '../components/CamouflagePattern';
 import { useTranslation } from 'react-i18next';
+import logo from '../assets/Emblem_of_the_Ethiopian_National_Defense_Force_(2).svg.png';
 
 const Home = () => {
     const { t, i18n } = useTranslation();
@@ -61,7 +63,7 @@ const Home = () => {
                 <CamouflagePattern variant="organic" opacity={0.15} />
                 {/* Tech Pattern Background */}
                 <TechPattern variant="circuit" />
-                
+
                 {/* Network Visualization Overlay */}
                 <div className="absolute inset-0 opacity-20">
                     <NetworkVisualization />
@@ -110,8 +112,8 @@ const Home = () => {
                     >
                         <div className="relative">
                             <div className="absolute inset-0 bg-ethiopian-green/20 blur-xl rounded-full" />
-                            <div className="relative bg-gradient-to-br from-ethiopian-green/30 to-primary/30 backdrop-blur-sm rounded-full p-6 border-2 border-ethiopian-green/50">
-                                <span className="text-6xl">🛡️</span>
+                            <div className="relative bg-gradient-to-br from-ethiopian-green/30 to-primary/30 backdrop-blur-sm rounded-full p-4 border-2 border-ethiopian-green/50 w-32 h-32 flex items-center justify-center overflow-hidden">
+                                <img src={logo} alt="Ethiopian National Defense Logo" className="w-full h-full object-contain" />
                             </div>
                         </div>
                     </motion.div>
@@ -124,7 +126,7 @@ const Home = () => {
                             {t('hero.title')}
                         </span>
                         <span className="text-2xl md:text-3xl font-light text-gray-300 block mt-4">
-                            {i18n.language === 'en' 
+                            {i18n.language === 'en'
                                 ? 'Information & Communication Technology Command'
                                 : 'የመረጃ እና ኮምዩኒኬሽን ቴክኖሎጂ ትዕዛዝ'}
                         </span>
@@ -204,7 +206,7 @@ const Home = () => {
                             {t('systemStatus.subtitle')}
                         </p>
                     </motion.div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <DataMetrics
                             label={t('metrics.networkNodes')}
@@ -302,7 +304,7 @@ const Home = () => {
                             {t('network.subtitle')}
                         </p>
                     </motion.div>
-                    
+
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}

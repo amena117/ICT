@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from '../assets/Emblem_of_the_Ethiopian_National_Defense_Force_(2).svg.png';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -36,11 +37,10 @@ const Navbar = () => {
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             transition={{ duration: 0.5 }}
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-                scrolled
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
                     ? 'glass-effect shadow-lg border-b border-ranger-tan/30 bg-gradient-to-r from-white/95 via-ranger-khaki/10 to-white/95 backdrop-blur-md'
                     : 'bg-gradient-to-r from-white/95 via-ranger-khaki/5 to-white/95 dark:bg-gray-900/95 backdrop-blur-md'
-            }`}
+                }`}
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
@@ -48,9 +48,11 @@ const Navbar = () => {
                         to="/"
                         className="flex items-center gap-3 group"
                     >
-                        <span className="text-3xl group-hover:scale-110 transition-transform duration-300">🛡️</span>
+                        <div className="w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <img src={logo} alt="Logo" className="w-full h-full object-contain" />
+                        </div>
                         <span className="text-2xl font-bold bg-gradient-to-r from-primary to-ethiopian-green bg-clip-text text-transparent tracking-tight">
-                            ICT Office
+                            ICT
                         </span>
                     </Link>
 
@@ -61,8 +63,7 @@ const Navbar = () => {
                                 key={link.to}
                                 to={link.to}
                                 className={({ isActive }) =>
-                                    `relative px-2 py-1 font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-300 hover:text-primary ${
-                                        isActive ? 'text-primary' : ''
+                                    `relative px-2 py-1 font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-300 hover:text-primary ${isActive ? 'text-primary' : ''
                                     }`
                                 }
                             >
@@ -81,7 +82,7 @@ const Navbar = () => {
                                 )}
                             </NavLink>
                         ))}
-                        
+
                         {/* Language Switcher */}
                         <motion.button
                             whileHover={{ scale: 1.05 }}
@@ -144,10 +145,9 @@ const Navbar = () => {
                                             to={link.to}
                                             onClick={() => setIsOpen(false)}
                                             className={({ isActive }) =>
-                                                `block px-4 py-3 rounded-lg font-semibold transition-colors ${
-                                                    isActive
-                                                        ? 'bg-gradient-to-r from-primary/10 to-ethiopian-green/10 text-primary border-l-4 border-ethiopian-green'
-                                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                                `block px-4 py-3 rounded-lg font-semibold transition-colors ${isActive
+                                                    ? 'bg-gradient-to-r from-primary/10 to-ethiopian-green/10 text-primary border-l-4 border-ethiopian-green'
+                                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                                 }`
                                             }
                                         >
@@ -155,7 +155,7 @@ const Navbar = () => {
                                         </NavLink>
                                     </motion.div>
                                 ))}
-                                
+
                                 {/* Mobile Language Switcher */}
                                 <motion.button
                                     initial={{ opacity: 0, x: -20 }}

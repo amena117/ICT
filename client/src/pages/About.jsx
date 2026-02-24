@@ -24,7 +24,7 @@ const About = () => {
 
     return (
         <div className="container section">
-            <h1 style={{ marginBottom: '2rem', textAlign: 'center' }}>About the ICT Office</h1>
+            <h1 style={{ marginBottom: '2rem', textAlign: 'center' }}>About the ICT </h1>
 
             {/* Goal Section */}
             <section style={{ marginBottom: '3rem', backgroundColor: '#f8f9fa', padding: '3rem 2rem', borderRadius: '8px' }}>

@@ -62,7 +62,7 @@ const Footer = () => {
                         <div className="flex items-center gap-3 mb-6">
                             <span className="text-4xl">🛡️</span>
                             <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-ethiopian-green/80 bg-clip-text text-transparent">
-                                ICT Office
+                                ICT 
                             </h3>
                         </div>
                         <p className="text-gray-300 leading-relaxed text-lg">
@@ -159,7 +159,7 @@ const Footer = () => {
                 >
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <p className="text-gray-400 text-sm">
-                            &copy; {currentYear} ICT Office - Ministry of Defense. Secure. Compliant.
+                            &copy; {currentYear} ICT  - Ministry of Defense. Secure. Compliant.
                         </p>
                         <div className="flex items-center gap-2 text-sm text-gray-400">
                             <span>Made with</span>
@@ -168,7 +168,7 @@ const Footer = () => {
                                 transition={{ duration: 1.5, repeat: Infinity }}
                                 className="text-ethiopian-red"
                             >
-                                ❤️
+                                ICT
                             </motion.span>
                             <span>for Ethiopia</span>
                         </div>
