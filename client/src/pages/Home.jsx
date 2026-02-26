@@ -6,6 +6,7 @@ import NetworkVisualization from '../components/NetworkVisualization';
 import DataMetrics from '../components/DataMetrics';
 import TechPattern from '../components/TechPattern';
 import CamouflagePattern from '../components/CamouflagePattern';
+import ValuesAccordion from '../components/ValuesAccordion';
 import { useTranslation } from 'react-i18next';
 import logo from '../assets/Emblem_of_the_Ethiopian_National_Defense_Force_(2).svg.png';
 
@@ -319,61 +320,71 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Goal Section */}
-            <section className="section bg-gradient-to-br from-ranger-khaki/40 via-ranger-tan-light/30 to-ranger-khaki/20 relative overflow-hidden">
+            {/* Values Accordion Section */}
+            <ValuesAccordion />
+
+            {/* Unified ICT Center Mission & Goal Section */}
+            <section className="section bg-gradient-to-br from-ranger-khaki/30 via-white/20 to-ranger-tan-light/20 relative overflow-hidden">
                 <CamouflagePattern variant="subtle" opacity={0.1} />
                 <TechPattern variant="hexagon" />
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full max-w-7xl">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="max-w-4xl mx-auto text-center"
+                        className="text-center mb-12 sm:mb-16"
                     >
-                        <p className="section-label">{t('goal.title')}</p>
-                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 tracking-tight">
-                            {t('goal.title')}
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight font-sans">
+                            አይሲቲ ማእከል
                         </h2>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl border border-gray-200/50 relative overflow-hidden">
-                            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-ethiopian-green to-primary" />
-                            <p className="text-xl md:text-2xl leading-relaxed text-gray-800 mb-6 font-semibold">
-                                በኢንፎርሜሽን ኮምዩኒኬሽን ቴክኖሎጂ ኢናቪሽን ላይ የተመሰረቱ የአስራር ስርዓቶች ያሉት ዲጂታል መከላከያን ማየት።
-                            </p>
-                            <p className="text-lg md:text-xl leading-relaxed text-gray-600 italic">
-                                To establish digital protection systems based on Information and Communication Technology (ICT) innovation.
-                            </p>
-                        </div>
                     </motion.div>
-                </div>
-            </section>
 
-            {/* Mission Section */}
-            <section className="section bg-gradient-to-br from-white via-ranger-khaki/20 to-ranger-tan-light/15 relative">
-                <CamouflagePattern variant="subtle" opacity={0.06} />
-                <TechPattern variant="dots" />
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="max-w-4xl mx-auto text-center"
-                    >
-                        <p className="section-label">{t('mission.title')}</p>
-                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 tracking-tight">
-                            {t('mission.title')}
-                        </h2>
-                        <div className="bg-gradient-to-br from-primary/5 to-ethiopian-green/5 rounded-2xl p-8 md:p-12 shadow-xl border border-gray-200/50 relative overflow-hidden">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        {/* Goal Column */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl border border-gray-200/50 relative overflow-hidden h-full flex flex-col"
+                        >
+                            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-ethiopian-green to-primary" />
+                            <p className="font-bold text-ethiopian-green mb-6 text-2xl border-b border-ethiopian-green/10 pb-2 drop-shadow-sm font-sans">
+                                {t('goal.title') || 'ግብ'}
+                            </p>
+                            <div className="flex-1 flex flex-col justify-center gap-6">
+                                <p className="text-xl md:text-2xl leading-relaxed text-gray-800 font-semibold font-sans text-justify">
+                                    በኢንፎርሜሽን ኮምዩኒኬሽን ቴክኖሎጂ ኢናቪሽን ላይ የተመሰረቱ የአስራር ስርዓቶች ያሉት ዲጂታል መከላከያን ማየት።
+                                </p>
+                                <p className="text-lg md:text-xl leading-relaxed text-gray-600 italic border-l-4 border-ethiopian-green/20 pl-4 py-1">
+                                    To establish digital protection systems based on Information and Communication Technology (ICT) innovation.
+                                </p>
+                            </div>
+                        </motion.div>
+
+                        {/* Mission Column */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.4 }}
+                            className="bg-gradient-to-br from-primary/5 to-ethiopian-green/5 rounded-2xl p-8 md:p-12 shadow-xl border border-gray-200/50 relative overflow-hidden h-full flex flex-col"
+                        >
                             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-ethiopian-green via-primary to-ethiopian-green" />
-                            <p className="text-xl md:text-2xl leading-relaxed text-gray-800 mb-6 font-semibold">
-                                የኢንፎርሜሽን ኮምዩኒኬሽን ቴክኖሎጂን በማለማትና በማስፋፋት ውጤታማ የኃብት አስተዳደር፣ ደህንነቱ የጠበቀ የኢንፎርሜሽን ፍሰትና ቀልጣፋ የአይሲቲ አገልግሎት በሚረጋገጥ ተቋሙ ተልዕኮውን በብቃት እንዲወጣ መደገፍ።
+                            <p className="font-bold text-primary mb-6 text-2xl border-b border-primary/10 pb-2 drop-shadow-sm font-sans">
+                                {t('mission.title') || 'ተልዕኮ'}
                             </p>
-                            <p className="text-lg md:text-xl leading-relaxed text-gray-600 italic">
-                                To support the institution's mission by developing and expanding ICT for efficient resource management, secure information flow, and reliable, fast IT services.
-                            </p>
-                        </div>
-                    </motion.div>
+                            <div className="flex-1 flex flex-col justify-center gap-6">
+                                <p className="text-xl md:text-2xl leading-relaxed text-gray-800 font-semibold font-sans text-justify">
+                                    የኢንፎርሜሽን ኮምዩኒኬሽን ቴክኖሎጂን በማለማትና በማስፋፋት ውጤታማ የኃብት አስተዳደር፣ ደህንነቱ የጠበቀ የኢንፎርሜሽን ፍሰትና ቀልጣፋ የአይሲቲ አገልግሎት በሚረጋገጥ ተቋሙ ተልዕኮውን በብቃት እንዲወጣ መደገፍ።
+                                </p>
+                                <p className="text-lg md:text-xl leading-relaxed text-gray-600 italic border-l-4 border-primary/20 pl-4 py-1">
+                                    To support the institution's mission by developing and expanding ICT for efficient resource management, secure information flow, and reliable, fast IT services.
+                                </p>
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
             </section>
 
