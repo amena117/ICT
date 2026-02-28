@@ -9,6 +9,7 @@ import CamouflagePattern from '../components/CamouflagePattern';
 import ValuesAccordion from '../components/ValuesAccordion';
 import { useTranslation } from 'react-i18next';
 import logo from '../assets/Emblem_of_the_Ethiopian_National_Defense_Force_(2).svg.png';
+import Partners from '../components/Partners';
 
 const Home = () => {
     const { t, i18n } = useTranslation();
@@ -387,6 +388,9 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Partners Marquee Section */}
+            <Partners />
 
             {/* Future Technologies Section */}
             <section className="section bg-gradient-to-b from-ranger-khaki/25 via-white to-ranger-tan/20 relative">
