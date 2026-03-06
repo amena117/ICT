@@ -17,7 +17,7 @@ const ProjectCard = ({ project }) => {
                     alt={project.title}
                     className="card-image group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+               
             </div>
             <div className="card-content">
                 <div className="flex items-center gap-2 mb-3">
@@ -52,7 +52,7 @@ const ProjectCard = ({ project }) => {
                 </Link>
             </div>
             {/* Hover border effect with ranger colors */}
-            <div className="absolute inset-0 border-t-4 bg-gradient-to-r from-ranger-olive via-ranger-tan to-ranger-olive opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+            <div className="absolute inset-0 border-t-4  opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
         </motion.div>
     );
 };
