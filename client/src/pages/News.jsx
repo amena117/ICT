@@ -1,34 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import NewsCard from '../components/NewsCard';
+import CamouflagePattern from '../components/CamouflagePattern';
 
 const News = () => {
+    const { t } = useTranslation();
     const [news, setNews] = useState([]);
+    const [filter, setFilter] = useState('All');
     const [loading, setLoading] = useState(true);
-
-    // Pagination & Search State
     const [searchTerm, setSearchTerm] = useState('');
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    // const [totalItems, setTotalItems] = useState(0);
+    const [totalItems, setTotalItems] = useState(0);
+
+    const categories = ['All', 'Technology', 'Innovation', 'Updates', 'Events'];
 
     const fetchNews = () => {
         setLoading(true);
-        // Build query params
         const params = new URLSearchParams();
         params.append('page', page);
         params.append('limit', 6);
+        if (filter !== 'All') params.append('category', filter);
         if (searchTerm) params.append('search', searchTerm);
 
         fetch(`/api/news?${params.toString()}`)
             .then(res => res.json())
             .then(data => {
-                // Backend now returns { data: [...], pagination: {...} }
                 if (data.pagination) {
                     setNews(data.data);
                     setTotalPages(data.pagination.totalPages);
-                    // setTotalItems(data.pagination.totalItems);
+                    setTotalItems(data.pagination.totalItems);
                 } else if (Array.isArray(data)) {
-                    // Fallback for old API style (just in case)
                     setNews(data);
                 } else {
                     setNews([]);
@@ -44,11 +47,16 @@ const News = () => {
     useEffect(() => {
         fetchNews();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page, searchTerm]); // Re-fetch when page or search changes
+    }, [filter, page, searchTerm]);
 
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
-        setPage(1); // Reset to page 1 on search
+        setPage(1);
+    };
+
+    const handleFilterChange = (newFilter) => {
+        setFilter(newFilter);
+        setPage(1);
     };
 
     const handlePrevPage = () => {
@@ -59,84 +67,181 @@ const News = () => {
         if (page < totalPages) setPage(p => p + 1);
     };
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+            },
+        },
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.5,
+            },
+        },
+    };
+
     return (
-        <div className="container section">
-            <h1 style={{ marginBottom: '2rem' }}>News & Announcements</h1>
+        <div className="pt-32 pb-20 min-h-screen bg-gradient-to-b from-ranger-khaki/30 via-white to-ranger-tan-light/25 relative overflow-hidden">
+            <CamouflagePattern variant="subtle" opacity={0.08} />
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Header */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className="text-center mb-12"
+                >
+                    <p className="section-label">Latest Updates</p>
+                    <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
+                        News & Announcements
+                    </h1>
+                    <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                        Stay informed with the latest developments, technological advancements, and important announcements from our network.
+                    </p>
+                </motion.div>
 
-            {/* Search Bar */}
-            <div style={{ marginBottom: '2rem', display: 'flex', gap: '10px' }}>
-                <input
-                    type="text"
-                    placeholder="Search news..."
-                    value={searchTerm}
-                    onChange={handleSearch}
-                    style={{
-                        padding: '0.8rem',
-                        fontSize: '1rem',
-                        width: '100%',
-                        maxWidth: '400px',
-                        border: '1px solid #ccc',
-                        borderRadius: '4px'
-                    }}
-                />
-            </div>
-
-            {loading ? (
-                <p>Loading updates...</p>
-            ) : (
-                <>
-                    <div className="card-grid">
-                        {news.map((item) => (
-                            <div key={item.id || item._id} className="card">
-                                <img
-                                    src={item.imageUrl || 'https://placehold.co/400x200'}
-                                    alt={item.title}
-                                    className="card-image"
-                                    style={{ height: '200px' }}
-                                />
-                                <div className="card-content">
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                                        <span style={{ fontSize: '0.85rem', color: '#666' }}>{new Date(item.date).toLocaleDateString()}</span>
-                                        {item.important && <span className="badge" style={{ fontSize: '0.7em', backgroundColor: '#e74c3c' }}>IMPORTANT</span>}
-                                    </div>
-                                    <h3 className="card-title" style={{ fontSize: '1.2rem' }}>{item.title}</h3>
-                                    <p style={{ fontSize: '0.95rem', marginBottom: '1rem' }}>{item.summary}</p>
-                                    <Link to={`/news/${item.id || item._id}`} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.9rem' }}>
-                                        Read More
-                                    </Link>
-                                </div>
-                            </div>
+                {/* Filter & Search Controls */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="mb-12 space-y-6"
+                >
+                    {/* Category Filters */}
+                    <div className="flex flex-wrap gap-3 justify-center">
+                        {categories.map(cat => (
+                            <motion.button
+                                key={cat}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => handleFilterChange(cat)}
+                                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${filter === cat
+                                        ? 'bg-gradient-to-r from-primary to-ethiopian-green text-white shadow-lg'
+                                        : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-primary hover:text-primary'
+                                    }`}
+                            >
+                                {cat}
+                            </motion.button>
                         ))}
                     </div>
 
-                    {news.length === 0 && <p>No news found.</p>}
-
-                    {/* Pagination Controls */}
-                    {totalPages > 1 && (
-                        <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', gap: '1rem', alignItems: 'center' }}>
-                            <button
-                                className="btn btn-secondary"
-                                onClick={handlePrevPage}
-                                disabled={page === 1}
-                                style={{ opacity: page === 1 ? 0.5 : 1, cursor: page === 1 ? 'not-allowed' : 'pointer' }}
-                            >
-                                Previous
-                            </button>
-                            <span>Page {page} of {totalPages}</span>
-                            <button
-                                className="btn btn-secondary"
-                                onClick={handleNextPage}
-                                disabled={page === totalPages}
-                                style={{ opacity: page === totalPages ? 0.5 : 1, cursor: page === totalPages ? 'not-allowed' : 'pointer' }}
-                            >
-                                Next
-                            </button>
+                    {/* Search Input */}
+                    <div className="max-w-md mx-auto">
+                        <div className="relative">
+                            <input
+                                type="text"
+                                placeholder="Search news..."
+                                value={searchTerm}
+                                onChange={handleSearch}
+                                className="w-full px-6 py-4 rounded-full border-2 border-gray-200 focus:border-primary focus:outline-none text-lg transition-all duration-300 shadow-sm hover:shadow-md focus:shadow-lg"
+                            />
+                            <span className="absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
                         </div>
-                    )}
-                </>
-            )}
+                    </div>
+                </motion.div>
+
+                {/* Loading State */}
+                {loading ? (
+                    <div className="text-center py-20">
+                        <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                            className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full mx-auto"
+                        />
+                        <p className="mt-4 text-gray-600 text-lg">Loading updates...</p>
+                    </div>
+                ) : (
+                    <>
+                        {/* News Grid */}
+                        {news.length > 0 ? (
+                            <motion.div
+                                variants={containerVariants}
+                                initial="hidden"
+                                animate="visible"
+                                className="card-grid mb-12"
+                            >
+                                {news.map((item, index) => (
+                                    <motion.div
+                                        key={item._id || item.id}
+                                        variants={itemVariants}
+                                        custom={index}
+                                    >
+                                        <NewsCard item={item} />
+                                    </motion.div>
+                                ))}
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="text-center py-20 bg-white rounded-2xl shadow-lg border border-gray-200"
+                            >
+                                <p className="text-gray-600 text-lg">No news found.</p>
+                            </motion.div>
+                        )}
+
+                        {/* Pagination Controls */}
+                        {totalPages > 1 && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.3 }}
+                                className="flex justify-center items-center gap-4 mt-12"
+                            >
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={handlePrevPage}
+                                    disabled={page === 1}
+                                    className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${page === 1
+                                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                            : 'bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white shadow-md'
+                                        }`}
+                                >
+                                    Previous
+                                </motion.button>
+                                <span className="text-gray-700 font-semibold px-4">
+                                    Page {page} of {totalPages}
+                                </span>
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={handleNextPage}
+                                    disabled={page === totalPages}
+                                    className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${page === totalPages
+                                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                            : 'bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white shadow-md'
+                                        }`}
+                                >
+                                    Next
+                                </motion.button>
+                            </motion.div>
+                        )}
+
+                        {/* Results Count */}
+                        {totalItems > 0 && (
+                            <motion.p
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="text-center text-gray-600 mt-6"
+                            >
+                                Showing {news.length} of {totalItems} articles
+                            </motion.p>
+                        )}
+                    </>
+                )}
+            </div>
         </div>
     );
 };
 
 export default News;
+
