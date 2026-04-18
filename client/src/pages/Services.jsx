@@ -85,7 +85,7 @@ const Services = () => {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
-                    <p className="section-label text-ethiopian-green">{t('services.label')}</p>
+                    <p className="section-label text-white">{t('services.label')}</p>
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
                         {t('services.title')}
                     </h1>

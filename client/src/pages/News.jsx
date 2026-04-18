@@ -71,20 +71,15 @@ const News = () => {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-            },
+            transition: { staggerChildren: 0.1 },
         },
     };
 
     const itemVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 0.5,
-            },
+            opacity: 1, y: 0,
+            transition: { duration: 0.5 },
         },
     };
 
@@ -99,12 +94,12 @@ const News = () => {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-12"
                 >
-                    <p className="section-label">Latest Updates</p>
+                    <p className="section-label">{t('newsPage.label')}</p>
                     <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
-                        News & Announcements
+                        {t('newsPage.title')}
                     </h1>
                     <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                        Stay informed with the latest developments, technological advancements, and important announcements from our network.
+                        {t('newsPage.description')}
                     </p>
                 </motion.div>
 
@@ -128,7 +123,7 @@ const News = () => {
                                         : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-primary hover:text-primary'
                                     }`}
                             >
-                                {cat}
+                                {t(`newsPage.categories.${cat}`)}
                             </motion.button>
                         ))}
                     </div>
@@ -138,7 +133,7 @@ const News = () => {
                         <div className="relative">
                             <input
                                 type="text"
-                                placeholder="Search news..."
+                                placeholder={t('newsPage.searchPlaceholder')}
                                 value={searchTerm}
                                 onChange={handleSearch}
                                 className="w-full px-6 py-4 rounded-full border-2 border-gray-200 focus:border-primary focus:outline-none text-lg transition-all duration-300 shadow-sm hover:shadow-md focus:shadow-lg"
@@ -156,7 +151,7 @@ const News = () => {
                             transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                             className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full mx-auto"
                         />
-                        <p className="mt-4 text-gray-600 text-lg">Loading updates...</p>
+                        <p className="mt-4 text-gray-600 text-lg">{t('newsPage.loading')}</p>
                     </div>
                 ) : (
                     <>
@@ -184,7 +179,7 @@ const News = () => {
                                 animate={{ opacity: 1 }}
                                 className="text-center py-20 bg-white rounded-2xl shadow-lg border border-gray-200"
                             >
-                                <p className="text-gray-600 text-lg">No news found.</p>
+                                <p className="text-gray-600 text-lg">{t('newsPage.noNews')}</p>
                             </motion.div>
                         )}
 
@@ -206,10 +201,10 @@ const News = () => {
                                             : 'bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white shadow-md'
                                         }`}
                                 >
-                                    Previous
+                                    {t('projects.previous')}
                                 </motion.button>
                                 <span className="text-gray-700 font-semibold px-4">
-                                    Page {page} of {totalPages}
+                                    {t('projects.page')} {page} {t('projects.of')} {totalPages}
                                 </span>
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
@@ -221,7 +216,7 @@ const News = () => {
                                             : 'bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white shadow-md'
                                         }`}
                                 >
-                                    Next
+                                    {t('projects.next')}
                                 </motion.button>
                             </motion.div>
                         )}
@@ -233,7 +228,7 @@ const News = () => {
                                 animate={{ opacity: 1 }}
                                 className="text-center text-gray-600 mt-6"
                             >
-                                Showing {news.length} of {totalItems} articles
+                                {t('newsPage.showingPrefix')} {news.length} {t('newsPage.of')} {totalItems} {t('newsPage.showingSuffix')}
                             </motion.p>
                         )}
                     </>

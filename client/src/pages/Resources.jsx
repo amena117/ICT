@@ -66,20 +66,15 @@ const Resources = () => {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-            },
+            transition: { staggerChildren: 0.1 },
         },
     };
 
     const itemVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 0.5,
-            },
+            opacity: 1, y: 0,
+            transition: { duration: 0.5 },
         },
     };
 
@@ -94,12 +89,12 @@ const Resources = () => {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-12"
                 >
-                    <p className="section-label">Knowledge Resources</p>
+                    <p className="section-label">{t('resourcesPage.label')}</p>
                     <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
-                        Resources & Documentation
+                        {t('resourcesPage.title')}
                     </h1>
                     <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                        Access comprehensive technical documentation, detailed whitepapers, and step-by-step tutorials designed to support your work.
+                        {t('resourcesPage.description')}
                     </p>
                 </motion.div>
 
@@ -123,7 +118,7 @@ const Resources = () => {
                                         : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-primary hover:text-primary'
                                     }`}
                             >
-                                {type}
+                                {t(`resourcesPage.types.${type}`)}
                             </motion.button>
                         ))}
                     </div>
@@ -133,7 +128,7 @@ const Resources = () => {
                         <div className="relative">
                             <input
                                 type="text"
-                                placeholder="Search resources..."
+                                placeholder={t('resourcesPage.searchPlaceholder')}
                                 value={searchTerm}
                                 onChange={handleSearch}
                                 className="w-full px-6 py-4 rounded-full border-2 border-gray-200 focus:border-primary focus:outline-none text-lg transition-all duration-300 shadow-sm hover:shadow-md focus:shadow-lg"
@@ -151,7 +146,7 @@ const Resources = () => {
                             transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                             className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full mx-auto"
                         />
-                        <p className="mt-4 text-gray-600 text-lg">Loading resources...</p>
+                        <p className="mt-4 text-gray-600 text-lg">{t('resourcesPage.loading')}</p>
                     </div>
                 ) : (
                     <>
@@ -179,7 +174,7 @@ const Resources = () => {
                                 animate={{ opacity: 1 }}
                                 className="text-center py-20 bg-white rounded-2xl shadow-lg border border-gray-200"
                             >
-                                <p className="text-gray-600 text-lg">No resources found.</p>
+                                <p className="text-gray-600 text-lg">{t('resourcesPage.noResources')}</p>
                             </motion.div>
                         )}
 
@@ -201,10 +196,10 @@ const Resources = () => {
                                             : 'bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white shadow-md'
                                         }`}
                                 >
-                                    Previous
+                                    {t('projects.previous')}
                                 </motion.button>
                                 <span className="text-gray-700 font-semibold px-4">
-                                    Page {page} of {totalPages}
+                                    {t('projects.page')} {page} {t('projects.of')} {totalPages}
                                 </span>
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
@@ -216,7 +211,7 @@ const Resources = () => {
                                             : 'bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white shadow-md'
                                         }`}
                                 >
-                                    Next
+                                    {t('projects.next')}
                                 </motion.button>
                             </motion.div>
                         )}
@@ -228,7 +223,7 @@ const Resources = () => {
                                 animate={{ opacity: 1 }}
                                 className="text-center text-gray-600 mt-6"
                             >
-                                Showing {resources.length} of {totalItems} resources
+                                {t('resourcesPage.showingPrefix')} {resources.length} {t('resourcesPage.of')} {totalItems} {t('resourcesPage.showingSuffix')}
                             </motion.p>
                         )}
                     </>

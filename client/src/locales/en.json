@@ -80,6 +80,68 @@
     "projects": "projects",
     "outcome": "Outcome:"
   },
+  "newsPage": {
+    "label": "Latest Updates",
+    "title": "News & Announcements",
+    "description": "Stay informed with the latest developments, technological advancements, and important announcements from our network.",
+    "categories": {
+      "All": "All",
+      "Technology": "Technology",
+      "Innovation": "Innovation",
+      "Updates": "Updates",
+      "Events": "Events"
+    },
+    "searchPlaceholder": "Search news...",
+    "loading": "Loading updates...",
+    "noNews": "No news found.",
+    "showingPrefix": "Showing",
+    "showingSuffix": "articles",
+    "of": "of",
+    "readMore": "Read More",
+    "important": "IMPORTANT"
+  },
+  "resourcesPage": {
+    "label": "Knowledge Resources",
+    "title": "Resources & Documentation",
+    "description": "Access comprehensive technical documentation, detailed whitepapers, and step-by-step tutorials designed to support your work.",
+    "types": {
+      "All": "All",
+      "Article": "Article",
+      "Tutorial": "Tutorial",
+      "Whitepaper": "Whitepaper"
+    },
+    "searchPlaceholder": "Search resources...",
+    "loading": "Loading resources...",
+    "noResources": "No resources found.",
+    "showingPrefix": "Showing",
+    "showingSuffix": "resources",
+    "of": "of",
+    "readArticle": "Read Article"
+  },
+  "aboutPage": {
+    "label": "Discover Our Vision",
+    "title": "About ICT",
+    "description": "Leading the digital transformation journey through innovation, robust infrastructure, and steadfast cybersecurity.",
+    "activitiesTitle": "Main Activities",
+    "leadershipTitle": "Leadership & Higher Officials",
+    "roles": {
+      "cio": "Chief Information Officer",
+      "deputyCyber": "Deputy Director of Cybersecurity",
+      "headInfra": "Head of Infrastructure"
+    },
+    "bios": {
+      "cio": "Leading the ministry's digital transformation with over 30 years of strategic defense experience.",
+      "deputyCyber": "Expert in threat intelligence and network hardening, ensuring our infrastructure remains impenetrable.",
+      "headInfra": "Overseeing the deployment of resilient cloud nodes and tactical battlefield communications."
+    },
+    "activities": {
+      "item1": "To study, develop, upgrade, and digitize the organization's information and communication technology systems.",
+      "item2": "To expand ICT infrastructure and services, and to manage data centers and sub-data centers of the organization.",
+      "item3": "To strengthen the organization's operations through ICT support and expand effective resource management systems.",
+      "item4": "To ensure the security of the organization's ICT infrastructure and services, maintain ICT assets and software, and execute backup and recovery operations.",
+      "item5": "To implement capacity-building programs in the field of information technology and collaborate with other national institutions."
+    }
+  },
   "common": {
     "language": "Language",
     "english": "English",

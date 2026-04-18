@@ -200,11 +200,11 @@ const Home = () => {
                         transition={{ duration: 0.6 }}
                         className="text-center mb-12"
                     >
-                        <p className="section-label text-ethiopian-green">{t('systemStatus.label')}</p>
+                        <p className="section-label text-white">{t('systemStatus.label')}</p>
                         <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
                             {t('systemStatus.title')}
                         </h2>
-                        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                        <p className="text-white text-lg max-w-2xl mx-auto">
                             {t('systemStatus.subtitle')}
                         </p>
                     </motion.div>
@@ -298,7 +298,7 @@ const Home = () => {
                         transition={{ duration: 0.6 }}
                         className="text-center mb-12"
                     >
-                        <p className="section-label text-ethiopian-green">{t('network.label')}</p>
+                        <p className="section-label text-white">{t('network.label')}</p>
                         <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
                             {t('network.title')}
                         </h2>

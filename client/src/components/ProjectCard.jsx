@@ -9,7 +9,7 @@ const ProjectCard = ({ project }) => {
         <motion.div
             whileHover={{ scale: 1.05, y: -8 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="card group cursor-pointer overflow-hidden"
+            className="card group cursor-pointer overflow-hidden flex flex-col h-full relative"
         >
             <div className="relative overflow-hidden">
                 <img
@@ -19,7 +19,7 @@ const ProjectCard = ({ project }) => {
                 />
                
             </div>
-            <div className="card-content">
+            <div className="card-content flex flex-col flex-grow">
                 <div className="flex items-center gap-2 mb-3">
                     <span className="badge bg-gradient-to-r from-ranger-olive to-ranger-olive-light">{project.category}</span>
                 </div>
@@ -39,7 +39,7 @@ const ProjectCard = ({ project }) => {
                 )}
                 <Link
                     to={`/projects/${project.id || project._id}`}
-                    className="inline-flex items-center gap-2 text-ranger-olive-dark font-semibold hover:gap-3 transition-all duration-300 group/link"
+                    className="inline-flex items-center gap-2 text-ranger-olive-dark font-semibold hover:gap-3 transition-all duration-300 group/link mt-auto z-10"
                 >
                     <span>{t('services.viewDetails')}</span>
                     <motion.span
@@ -51,8 +51,8 @@ const ProjectCard = ({ project }) => {
                     </motion.span>
                 </Link>
             </div>
-            {/* Hover border effect with ranger colors */}
-            <div className="absolute inset-0 border-t-4  opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+            {/* Hover overlay effect */}
+            <div className="absolute inset-0 bg-ethiopian-green/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
         </motion.div>
     );
 };

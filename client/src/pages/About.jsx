@@ -1,142 +1,212 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { FaBullseye, FaRocket, FaGlobe, FaServer, FaCogs, FaShieldAlt, FaLaptopCode } from 'react-icons/fa';
+import CamouflagePattern from '../components/CamouflagePattern';
 
 const About = () => {
+    const { t } = useTranslation();
+
     const officials = [
         {
             name: "Gen. Arthur Sterling",
-            role: "Chief Information Officer",
-            bio: "Leading the ministry's digital transformation with over 30 years of strategic defense experience.",
-            imageUrl: "https://placehold.co/150x150/2c3e50/ffffff?text=CIO"
+            role: t('aboutPage.roles.cio'),
+            bio: t('aboutPage.bios.cio'),
+            imageUrl: "https://placehold.co/150x150/001F3F/ffffff?text=CIO"
         },
         {
             name: "Sarah Jenkins",
-            role: "Deputy Director of Cybersecurity",
-            bio: "Expert in threat intelligence and network hardening, ensuring our infrastructure remains impenetrable.",
-            imageUrl: "https://placehold.co/150x150/e74c3c/ffffff?text=Sec+Dir"
+            role: t('aboutPage.roles.deputyCyber'),
+            bio: t('aboutPage.bios.deputyCyber'),
+            imageUrl: "https://placehold.co/150x150/006A4E/ffffff?text=Sec+Dir"
         },
         {
             name: "Col. James Vance",
-            role: "Head of Infrastructure",
-            bio: "Overseeing the deployment of resilient cloud nodes and tactical battlefield communications.",
-            imageUrl: "https://placehold.co/150x150/2980b9/ffffff?text=Infra+Head"
+            role: t('aboutPage.roles.headInfra'),
+            bio: t('aboutPage.bios.headInfra'),
+            imageUrl: "https://placehold.co/150x150/556B2F/ffffff?text=Infra+Head"
         }
     ];
 
+    const activities = [
+        {
+            id: "3.1",
+            icon: <FaLaptopCode />,
+            text: t('aboutPage.activities.item1')
+        },
+        {
+            id: "3.2",
+            icon: <FaServer />,
+            text: t('aboutPage.activities.item2')
+        },
+        {
+            id: "3.3",
+            icon: <FaCogs />,
+            text: t('aboutPage.activities.item3')
+        },
+        {
+            id: "3.4",
+            icon: <FaShieldAlt />,
+            text: t('aboutPage.activities.item4')
+        },
+        {
+            id: "3.5",
+            icon: <FaGlobe />,
+            text: t('aboutPage.activities.item5')
+        }
+    ];
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.15 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+    };
+
     return (
-        <div className="container section">
-            <h1 style={{ marginBottom: '2rem', textAlign: 'center' }}>About the ICT </h1>
-
-            {/* Goal Section */}
-            <section style={{ marginBottom: '3rem', backgroundColor: '#f8f9fa', padding: '3rem 2rem', borderRadius: '8px' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '2rem', color: '#2C3E50' }}>
-                    አላማ (Goal)
-                </h2>
-                <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-                    <p style={{ fontSize: '1.15rem', lineHeight: '1.8', marginBottom: '1rem', fontWeight: '500', textAlign: 'center' }}>
-                        በኢንፎርሜሽን ኮምዩኒኬሽን ቴክኖሎጂ ኢናቪሽን ላይ የተመሰረቱ የአስራር ስርዓቶች ያሉት ዲጂታል መከላከያን ማየት።
+        <div className="pt-32 pb-20 min-h-screen bg-gradient-to-b from-ranger-khaki/30 via-white to-ranger-tan-light/25 relative overflow-hidden">
+            <CamouflagePattern variant="subtle" opacity={0.08} />
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                
+                {/* Hero Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className="text-center mb-20"
+                >
+                    <p className="section-label">{t('aboutPage.label')}</p>
+                    <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
+                        {t('aboutPage.title')}
+                    </h1>
+                    <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                        {t('aboutPage.description')}
                     </p>
-                    <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#555', fontStyle: 'italic', textAlign: 'center' }}>
-                        To establish digital protection systems based on Information and Communication Technology (ICT) innovation.
-                    </p>
-                </div>
-            </section>
+                </motion.div>
 
-            {/* Mission Section */}
-            <section style={{ marginBottom: '3rem', backgroundColor: '#fff', padding: '3rem 2rem', borderRadius: '8px', border: '1px solid #eee' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '2rem', color: '#2C3E50' }}>
-                    ተልዕኮ (Mission)
-                </h2>
-                <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-                    <p style={{ fontSize: '1.15rem', lineHeight: '1.8', marginBottom: '1rem', fontWeight: '500', textAlign: 'center' }}>
-                        የኢንፎርሜሽን ኮምዩኒኬሽን ቴክኖሎጂን በማለማትና በማስፋፋት ውጤታማ የኃብት አስተዳደር፣ ደህንነቱ የጠበቀ የኢንፎርሜሽን ፍሰትና ቀልጣፋ የአይሲቲ አገልግሎት በሚረጋገጥ ተቋሙ ተልዕኮውን በብቃት እንዲወጣ መደገፍ።
-                    </p>
-                    <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#555', fontStyle: 'italic', textAlign: 'center' }}>
-                        To support the institution's mission by developing and expanding ICT for efficient resource management, secure information flow, and reliable, fast IT services.
-                    </p>
-                </div>
-            </section>
-
-            {/* Main Activities Section */}
-            <section style={{ marginBottom: '4rem' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '3rem', color: '#2C3E50', borderBottom: '3px solid #3498DB', paddingBottom: '1rem' }}>
-                    ዋና ዋና ተግባራት (Main Activities)
-                </h2>
-
-                <div style={{ display: 'grid', gap: '2rem', maxWidth: '1000px', margin: '0 auto' }}>
-                    {/* Activity 3.1 */}
-                    <div style={{ backgroundColor: '#f8f9fa', padding: '2rem', borderRadius: '8px', borderLeft: '4px solid #3498DB' }}>
-                        <h3 style={{ color: '#2C3E50', marginBottom: '1rem', fontSize: '1.1rem' }}>3.1</h3>
-                        <p style={{ fontSize: '1.05rem', lineHeight: '1.8', marginBottom: '0.8rem', fontWeight: '500' }}>
-                            የተቋሙን የኢንፎርሜሽን ኮምዩኒኬሽን ቴክኖሎጂ ሲስተም ማጥናት፣ ማልማት፣ ማለመድና ዲጆታላይዝድ ያደርጋል።
-                        </p>
-                        <p style={{ fontSize: '0.95rem', lineHeight: '1.7', color: '#555', fontStyle: 'italic' }}>
-                            To study, develop, upgrade, and digitize the organization's information and communication technology systems.
-                        </p>
-                    </div>
-
-                    {/* Activity 3.2 */}
-                    <div style={{ backgroundColor: '#f8f9fa', padding: '2rem', borderRadius: '8px', borderLeft: '4px solid #27AE60' }}>
-                        <h3 style={{ color: '#2C3E50', marginBottom: '1rem', fontSize: '1.1rem' }}>3.2</h3>
-                        <p style={{ fontSize: '1.05rem', lineHeight: '1.8', marginBottom: '0.8rem', fontWeight: '500' }}>
-                            የተቋሙን ኢንፎርሜሽን ኮምዩኒኬሽን ቴክኖሎጂ መሰረተ ልማትና አገልግሎት ማስፋፋት፣ ሲስተሞችን ዳታ ማዕከሎችና ንዑስ ዳታ ማዕከሎችን ያስተዳደሩል።
-                        </p>
-                        <p style={{ fontSize: '0.95rem', lineHeight: '1.7', color: '#555', fontStyle: 'italic' }}>
-                            To expand ICT infrastructure and services, and to manage data centers and sub-data centers of the organization.
-                        </p>
-                    </div>
-
-                    {/* Activity 3.3 */}
-                    <div style={{ backgroundColor: '#f8f9fa', padding: '2rem', borderRadius: '8px', borderLeft: '4px solid #E67E22' }}>
-                        <h3 style={{ color: '#2C3E50', marginBottom: '1rem', fontSize: '1.1rem' }}>3.3</h3>
-                        <p style={{ fontSize: '1.05rem', lineHeight: '1.8', marginBottom: '0.8rem', fontWeight: '500' }}>
-                            የተቋሙ አስራሮች በኢንፎርሜሽን ኮምዩኒኬሽን ቴክኖሎጂ እንዲደገፉ በማድረግ ውጤታማ የኃብት አስተዳደር ስርዓት ይዘረጋል።
-                        </p>
-                        <p style={{ fontSize: '0.95rem', lineHeight: '1.7', color: '#555', fontStyle: 'italic' }}>
-                            To strengthen the organization's operations through ICT support and expand effective resource management systems.
-                        </p>
-                    </div>
-
-                    {/* Activity 3.4 */}
-                    <div style={{ backgroundColor: '#f8f9fa', padding: '2rem', borderRadius: '8px', borderLeft: '4px solid #E74C3C' }}>
-                        <h3 style={{ color: '#2C3E50', marginBottom: '1rem', fontSize: '1.1rem' }}>3.4</h3>
-                        <p style={{ fontSize: '1.05rem', lineHeight: '1.8', marginBottom: '0.8rem', fontWeight: '500' }}>
-                            የተቋሙን የአይሲቲ መሰረተ ልማትና አገልግሎቶች ደህንነት ይጠብቃል፣ የአይሲቲ ንብረቶች እና ሶፍትዌሮች ይጠግናል፤ መልሶ የማግኘት (Backup & Recovery) ተግባራትን ያከናውናል።
-                        </p>
-                        <p style={{ fontSize: '0.95rem', lineHeight: '1.7', color: '#555', fontStyle: 'italic' }}>
-                            To ensure the security of the organization's ICT infrastructure and services, maintain ICT assets and software, and execute backup and recovery operations.
-                        </p>
-                    </div>
-
-                    {/* Activity 3.5 */}
-                    <div style={{ backgroundColor: '#f8f9fa', padding: '2rem', borderRadius: '8px', borderLeft: '4px solid #9B59B6' }}>
-                        <h3 style={{ color: '#2C3E50', marginBottom: '1rem', fontSize: '1.1rem' }}>3.5</h3>
-                        <p style={{ fontSize: '1.05rem', lineHeight: '1.8', marginBottom: '0.8rem', fontWeight: '500' }}>
-                            በኢንፎርሜሽን ቴክኖሎጂ ዘርፍ የአቅም ግንባታ ስራዎች ያከናውናል፤ ከሌሎች አገራዊ ተቋማት ጋር በትብብር ይሰራል።
-                        </p>
-                        <p style={{ fontSize: '0.95rem', lineHeight: '1.7', color: '#555', fontStyle: 'italic' }}>
-                            To implement capacity-building programs in the field of information technology and collaborate with other national institutions.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <h2 style={{ textAlign: 'center', marginBottom: '3rem', borderBottom: '2px solid #eee', paddingBottom: '1rem' }}>Leadership & Higher Officials</h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3rem' }}>
-                    {officials.map((person, idx) => (
-                        <div key={idx} style={{ textAlign: 'center' }}>
-                            <img
-                                src={person.imageUrl}
-                                alt={person.name}
-                                style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover', marginBottom: '1.5rem', border: '4px solid #fff', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}
-                            />
-                            <h3 style={{ margin: '0.5rem 0', color: '#2C3E50' }}>{person.name}</h3>
-                            <h4 style={{ margin: '0 0 1rem 0', color: '#7f8c8d', fontSize: '1rem', fontWeight: 'normal' }}>{person.role}</h4>
-                            <p style={{ fontSize: '0.95rem', color: '#555' }}>{person.bio}</p>
+                {/* Goal and Mission Section */}
+                <motion.div 
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24"
+                >
+                    {/* Goal Card */}
+                    <motion.div variants={itemVariants} className="card group bg-white rounded-2xl shadow-md border border-gray-100 hover:shadow-xl p-8 md:p-10 flex flex-col h-full relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-ethiopian-green/5 rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-500"></div>
+                        <div className="w-14 h-14 bg-ethiopian-green/10 text-ethiopian-green rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <FaBullseye />
                         </div>
-                    ))}
-                </div>
-            </section>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('goal.title')}</h2>
+                        <div className="flex-grow space-y-4">
+                            <p className="text-gray-800 font-medium text-lg leading-relaxed">
+                                {t('goal.text')}
+                            </p>
+                        </div>
+                    </motion.div>
+
+                    {/* Mission Card */}
+                    <motion.div variants={itemVariants} className="card group bg-white rounded-2xl shadow-md border border-gray-100 hover:shadow-xl p-8 md:p-10 flex flex-col h-full relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-32 h-32 bg-primary/5 rounded-br-full -z-10 group-hover:scale-110 transition-transform duration-500"></div>
+                        <div className="w-14 h-14 bg-primary/10 text-primary rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <FaRocket />
+                        </div>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('mission.title')}</h2>
+                        <div className="flex-grow space-y-4">
+                            <p className="text-gray-800 font-medium text-lg leading-relaxed">
+                                {t('mission.text')}
+                            </p>
+                        </div>
+                    </motion.div>
+                </motion.div>
+
+                {/* Main Activities Section */}
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    className="mb-24"
+                >
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 inline-block gradient-underline pb-4">
+                            {t('aboutPage.activitiesTitle')}
+                        </h2>
+                    </div>
+
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {activities.map((activity) => (
+                            <motion.div 
+                                key={activity.id} 
+                                variants={itemVariants}
+                                whileHover={{ y: -8 }}
+                                className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 relative group flex flex-col h-full overflow-hidden"
+                            >
+                                <div className="absolute top-0 right-0 border-t-[50px] border-r-[50px] border-t-ranger-olive/10 border-r-transparent rounded-tr-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div className="flex items-center gap-4 mb-5">
+                                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-white text-xl shadow-md">
+                                        {activity.icon}
+                                    </div>
+                                    <span className="text-2xl font-bold text-gray-300 group-hover:text-primary transition-colors">{activity.id}</span>
+                                </div>
+                                <p className="text-gray-800 font-medium leading-relaxed flex-grow">
+                                    {activity.text}
+                                </p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.div>
+
+                {/* Leadership Section */}
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                >
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 inline-block gradient-underline pb-4">
+                            {t('aboutPage.leadershipTitle')}
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                        {officials.map((person, idx) => (
+                            <motion.div 
+                                key={idx} 
+                                variants={itemVariants}
+                                className="group flex flex-col items-center text-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-50"
+                            >
+                                <div className="relative mb-6">
+                                    <div className="absolute inset-0 bg-primary/20 rounded-full blur-md transform scale-90 group-hover:scale-105 transition-transform duration-300"></div>
+                                    <img
+                                        src={person.imageUrl}
+                                        alt={person.name}
+                                        className="w-36 h-36 rounded-full object-cover border-4 border-white shadow-lg relative z-10"
+                                    />
+                                </div>
+                                <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors">
+                                    {person.name}
+                                </h3>
+                                <h4 className="text-sm font-semibold text-ethiopian-green uppercase tracking-wider mb-4">
+                                    {person.role}
+                                </h4>
+                                <p className="text-gray-600 leading-relaxed max-w-sm">
+                                    {person.bio}
+                                </p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.div>
+
+            </div>
         </div>
     );
 };
